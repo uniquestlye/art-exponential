@@ -791,71 +791,102 @@ export default function Home() {
 
         {/* Clients – Auto Carousel */}
         <section id="ลูกค้า" className="py-16 px-4 bg-white relative">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-5xl font-bold text-slate-900">
-                ลูกค้าที่ไว้วางใจ
-              </h2>
-              <p className="text-slate-600 mt-3">
-                หน่วยงานและองค์กรชั้นนำทั่วประเทศ
-              </p>
-              <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto mt-4" />
-            </div>
+  <div className="max-w-6xl mx-auto">
+    <div className="text-center mb-10">
+      <h2 className="text-3xl md:text-5xl font-bold text-slate-900">
+        ลูกค้าที่ไว้วางใจ
+      </h2>
+      <p className="text-slate-600 mt-3">
+        หน่วยงานและองค์กรชั้นนำทั่วประเทศ
+      </p>
+      <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto mt-4" />
+    </div>
 
-            <div className="relative w-full overflow-hidden">
-              <div
-                className="flex transition-transform duration-700 ease-out"
-                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-              >
-                {clients.map((client, idx) => (
-                  <div
-                    key={idx}
-                    className="min-w-full flex justify-center px-6"
-                  >
-                    <div className="bg-white/90 backdrop-blur-lg p-6 rounded-3xl shadow-lg border border-slate-100 w-72 flex flex-col items-center hover:shadow-2xl transition">
-                      <div className="w-28 h-28 bg-emerald-50 rounded-2xl flex items-center justify-center shadow-inner">
-                        <Image
-                          src={client.logo}
-                          alt={client.name}
-                          width={120}
-                          height={120}
-                          className="object-contain"
-                        />
-                      </div>
-                      <p className="text-center text-sm font-semibold mt-4 line-clamp-2 text-slate-800">
-                        {client.name}
-                      </p>
-                      {client.sector && (
-                        <p className="text-xs text-slate-500 mt-1">
-                          {client.sector}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+    {/* กล่องรวม Carousel */}
+    <div className="relative w-full overflow-hidden">
 
-            <div className="flex justify-center mt-6 gap-2">
-              {clients.map((_, idx) => (
-                <div
-                  key={idx}
-                  className={`h-2 rounded-full transition-all ${
-                    idx === currentIndex
-                      ? "bg-emerald-600 w-8"
-                      : "bg-slate-300 w-2"
-                  }`}
+      {/* ปุ่มเลื่อนซ้าย */}
+      <button
+        onClick={() =>
+          setCurrentIndex(
+            (prev) => (prev - 1 + clients.length) % clients.length
+          )
+        }
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-20 
+          bg-white/90 hover:bg-emerald-100 shadow-lg border border-slate-200 
+          w-10 h-10 rounded-full flex items-center justify-center 
+          hover:scale-110 transition"
+      >
+        ‹
+      </button>
+
+      {/* รายการโลโก้ Carousel */}
+      <div
+        className="flex transition-transform duration-700 ease-out"
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
+        {clients.map((client, idx) => (
+          <div
+            key={idx}
+            className="min-w-full flex justify-center px-6"
+          >
+            <div className="bg-white/90 backdrop-blur-lg p-6 rounded-3xl shadow-lg border border-slate-100 w-72 flex flex-col items-center hover:shadow-2xl transition">
+              <div className="w-28 h-28 bg-emerald-50 rounded-2xl flex items-center justify-center shadow-inner">
+                <Image
+                  src={client.logo}
+                  alt={client.name}
+                  width={120}
+                  height={120}
+                  className="object-contain"
                 />
-              ))}
+              </div>
+              <p className="text-center text-sm font-semibold mt-4 line-clamp-2 text-slate-800">
+                {client.name}
+              </p>
+              {client.sector && (
+                <p className="text-xs text-slate-500 mt-1">
+                  {client.sector}
+                </p>
+              )}
             </div>
-
-            <p className="text-center text-slate-500 mt-8">
-              มากกว่า{" "}
-              <span className="text-emerald-700 font-bold">10+</span>{" "}
-              องค์กรทั่วประเทศ
-            </p>
           </div>
-        </section>
+        ))}
+      </div>
+
+      {/* ปุ่มเลื่อนขวา */}
+      <button
+        onClick={() => setCurrentIndex((prev) => (prev + 1) % clients.length)}
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-20 
+          bg-white/90 hover:bg-emerald-100 shadow-lg border border-slate-200 
+          w-10 h-10 rounded-full flex items-center justify-center 
+          hover:scale-110 transition"
+      >
+        ›
+      </button>
+    </div>
+
+    {/* จุด Indicator */}
+    <div className="flex justify-center mt-6 gap-2">
+      {clients.map((_, idx) => (
+        <div
+          key={idx}
+          className={`h-2 rounded-full transition-all ${
+            idx === currentIndex
+              ? "bg-emerald-600 w-8"
+              : "bg-slate-300 w-2"
+          }`}
+        />
+      ))}
+    </div>
+
+    <p className="text-center text-slate-500 mt-8">
+      มากกว่า{" "}
+      <span className="text-emerald-700 font-bold">10+</span>{" "}
+      องค์กรทั่วประเทศ
+    </p>
+  </div>
+</section>
+
 
         {/* Footer */}
         <footer className="bg-gradient-to-br from-slate-900 via-emerald-950 to-teal-900 text-white py-20 px-4">
