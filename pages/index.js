@@ -36,7 +36,7 @@ const executives = [
     image: "/images/TJC2.jpg",
   },
   {
-    name: "คุณประสิทธิ์ ชัยชนะ",
+    name: "นายอรรถสิทธิ์ สุตัญตั้งใจ",
     position: "ประธานเจ้าหน้าที่บริหาร",
     image: "/images/TJC3.jpg",
   },
@@ -928,7 +928,7 @@ export default function Home() {
                     <Facebook size={24} />
                   </a>
                   <a
-                    href="https://line.me/ti/p/yx1IZIo2HR"
+                    href="https://line.me/R/ti/p/@024lfgkw"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-12 h-12 bg-white/10 hover:bg-gradient-to-br hover:from-emerald-500 hover:to-teal-500 rounded-xl flex items-center justify-center transition-all transform hover:scale-110"
@@ -986,7 +986,7 @@ export default function Home() {
                       <div className="font-semibold text-white">
                         โทรศัพท์สำนักงาน
                       </div>
-                      <a href="tel:0804746169">080-474-6169</a>
+                      <a href="tel:0804746169">0945438829</a>
                     </div>
                   </li>
 
@@ -1011,7 +1011,7 @@ export default function Home() {
                     <div>
                       <div className="font-semibold text-white">อีเมล</div>
                       <a href="mailto:TJC.OFFICE21@gmail.com">
-                        TJC.OFFICE21@gmail.com
+                        a.r.t.exponential.office@gmail.com
                       </a>
                     </div>
                   </li>
@@ -1024,8 +1024,7 @@ export default function Home() {
                     <div>
                       <div className="font-semibold text-white">ที่อยู่</div>
                       <span>
-                        311/1 หมู่ 4 ตำบลคำน้ำแซบ อำเภอวารินชำราบ จังหวัดอุบลราชธานี
-                        34190
+                        99/35 นิว คอนเน็กซ์ เฮาส์ ถนนพหลโยธิน แขวงสนามบิน เขตดอนเมือง จังหวัดกรุงเทพมหานคร 10210
                         <br />
                         ทำการ : จันทร์-ศุกร์ | 08:00 - 17:00 น.
                       </span>
@@ -1103,7 +1102,7 @@ export default function Home() {
 
                 {/* Line */}
                 <a
-                  href="https://line.me/ti/p/yx1IZIo2HR"
+                  href="https://line.me/R/ti/p/@024lfgkw"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-4 p-4 bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-2xl hover:from-emerald-100 hover:to-emerald-200 transition-all group transform hover:scale-105"
@@ -1125,7 +1124,7 @@ export default function Home() {
 
                 {/* Email */}
                 <a
-                  href="mailto:TJC.OFFICE21@gmail.com"
+                  href="mailto:a.r.t.exponential.office@gmail.com"
                   className="flex items-center space-x-4 p-4 bg-gradient-to-r from-rose-50 to-rose-100 rounded-2xl hover:from-rose-100 hover:to-rose-200 transition-all group transform hover:scale-105"
                 >
                   <div className="w-12 h-12 bg-gradient-to-br from-rose-500 to-rose-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -1136,7 +1135,7 @@ export default function Home() {
                       Email
                     </div>
                     <div className="text-sm text-slate-500">
-                      TJC.OFFICE21@gmail.com
+                      a.r.t.exponential.office@gmail.com
                     </div>
                   </div>
                   <ChevronRight
@@ -1157,7 +1156,7 @@ export default function Home() {
                     <div className="font-bold text-slate-900 group-hover:text-teal-700 transition-colors">
                       โทรศัพท์สำนักงาน
                     </div>
-                    <div className="text-sm text-slate-500">080-474-6169</div>
+                    <div className="text-sm text-slate-500">0945438829</div>
                   </div>
                   <ChevronRight
                     className="text-slate-400 group-hover:text-teal-700 group-hover:translate-x-1 transition-all"
@@ -1194,15 +1193,14 @@ export default function Home() {
                     <div>
                       <div className="font-bold text-slate-900">ที่อยู่</div>
                       <div className="text-sm text-slate-700">
-                        311/1 หมู่ 4 ตำบลคำน้ำแซบ อำเภอวารินชำราบ จังหวัดอุบลราชธานี
-                        34190
+                        99/35 นิว คอนเน็กซ์ เฮาส์ ถนนพหลโยธิน แขวงสนามบิน เขตดอนเมือง จังหวัดกรุงเทพมหานคร 10210
                       </div>
                     </div>
                   </div>
 
                   <div className="aspect-video rounded-xl overflow-hidden shadow-lg">
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3921.013708708336!2d104.81445607593245!3d15.20325543598289!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31168934ea2a73af%3A0xbc9f5816cefce4be!2z4Lia4Lij4Li04LiZ4Lix4LiVIOC4muC4tOC4o-C4suC4iOC4oOC5hOC4q-C4suC4leC5gOC4oeC4uOC4q-C4lCDguKrguLPguJnguKHguLHguIfguYjguKLguKcg4Lia4Lij4Li04LiZ4Lix4LiV4LiB4LmA4LiX4Li44LmI4Liy4LiH4Lit4LiH4LiK!5e0!3m2!1sth!2sth!4v1731296400000!5m2!1sth!2sth"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1151.1945180403202!2d100.61957505174753!3d13.950186682948669!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e283014fac5667%3A0x5a905057fec8b351!2sA.R.T.%20EXPONENTIAL%20CO.%2C%20LTD.!5e0!3m2!1sen!2sth!4v1763630488829!5m2!1sen!2sth"
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
@@ -1214,7 +1212,7 @@ export default function Home() {
 
                   <p className="text-xs text-slate-600 mt-2 text-center">
                     <a
-                      href="https://www.google.com/maps/place/15.20325543598289,104.81445607593245"
+                      href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1151.1945180403202!2d100.61957505174753!3d13.950186682948669!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e283014fac5667%3A0x5a905057fec8b351!2sA.R.T.%20EXPONENTIAL%20CO.%2C%20LTD.!5e0!3m2!1sen!2sth!4v1763630488829!5m2!1sen!2sth"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline"
