@@ -1,7 +1,9 @@
-// pages/index.js
+// pages/index.js (โค้ดที่ได้รับการปรับปรุง)
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
+import { products, news } from "../data/mockData";
 
 import {
   Menu,
@@ -65,59 +67,7 @@ const services = [
   },
 ];
 
-const products = [
-  {
-    name: "อุปกรณ์อุตสาหกรรม A1",
-    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=500",
-    category: "อุตสาหกรรม",
-  },
-  {
-    name: "เครื่องจักร B2",
-    image: "https://images.unsplash.com/photo-1565043666747-69f6646db940?w=500",
-    category: "เครื่องจักร",
-  },
-  {
-    name: "ระบบควบคุม C3",
-    image: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=500",
-    category: "ระบบควบคุม",
-  },
-  {
-    name: "อุปกรณ์ไฟฟ้า D4",
-    image: "https://images.unsplash.com/photo-1513828583688-c52646db42da?w=500",
-    category: "ไฟฟ้า",
-  },
-  {
-    name: "เซ็นเซอร์อัจฉริยะ E5",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=500",
-    category: "เทคโนโลยี",
-  },
-  {
-    name: "ระบบอัตโนมัติ F6",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=500",
-    category: "ระบบอัตโนมัติ",
-  },
-];
 
-const news = [
-  {
-    title: "ร่วมสนับสนุกการแข่งขันกีฬาเยาวชนและประชาชน",
-    date: "25 มี.ค. 2567",
-    image: "/images/new1.jpg",
-    excerpt: "สนับสนุนกิจกรรมเยาวชน และสร้างสัมพันธ์กับชุมชนอย่างต่อเนื่อง",
-  },
-  {
-    title: "กิจกรรมประกวดราคาอิเล็กทรอนิกส์ (e-bidding)",
-    date: "30 พ.ค. 2568",
-    image: "/images/new2.jpg",
-    excerpt: "ดำเนินการจัดซื้อจัดจ้างด้วยระบบอิเล็กทรอนิกส์ โปร่งใส ตรวจสอบได้",
-  },
-  {
-    title: "สนับสนุนทีมปิงปองหงส์ขาว",
-    date: "5 พ.ย. 2568",
-    image: "/images/new3.jpg",
-    excerpt: "ร่วมส่งเสริมสุขภาพและกีฬาให้กับเยาวชนในพื้นที่",
-  },
-];
 
 const clients = [
   {
@@ -188,9 +138,19 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [openImage, setOpenImage] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [openImage, setOpenImage] = useState(null); // สำหรับ ISO
+  const [currentIndex, setCurrentIndex] = useState(0); // สำหรับ Clients Carousel
+  const [selectedProduct, setSelectedProduct] = useState(null); // <<<< เพิ่ม: สำหรับ Product Detail Modal
+  const [activeNews, setActiveNews] = useState(news[0]); // เพิ่มบรรทัดนี้สำหรับเก็บข่าวที่กำลังโชว์
 
+  // แยกหมวดหมู่สินค้า
+  const medicalProducts = products.filter(p => p.category === "การแพทย์");
+  const electricalProducts = products.filter(p => p.category === "ไฟฟ้า");
+
+  // ฟังก์ชันสำหรับ Infinite Scroll Loop (Clone ข้อมูลเพื่อให้เลื่อนไม่สะดุด)
+  const getScrollItems = (items) => [...items, ...items, ...items];
+  
+// ตรวจจับการเลื่อนหน้า
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -219,7 +179,7 @@ export default function Home() {
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-sky-50 to-teal-50">
-        {/* Navbar */}
+        {/* Navbar - (No changes needed here) */}
         <nav
           className={`fixed w-full z-50 transition-all duration-300 ${
             scrolled
@@ -293,7 +253,7 @@ export default function Home() {
           )}
         </nav>
 
-        {/* Hero Section */}
+        {/* Hero Section - (No changes needed here) */}
         <section
           id="หน้าแรก"
           className="relative pt-32 pb-24 px-4 overflow-hidden"
@@ -333,7 +293,6 @@ export default function Home() {
                     มากกว่า 500 โครงการ
                   </button>
                 </div>
-        
               </div>
               <div className="relative">
                 <div className="relative aspect-video bg-gradient-to-br from-emerald-600 to-teal-600 rounded-3xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-500">
@@ -355,7 +314,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* About Section */}
+        {/* About Section - (No changes needed here) */}
         <section id="เกี่ยวกับ" className="py-24 px-4 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
@@ -402,8 +361,8 @@ export default function Home() {
                   </h3>
                   <p className="text-slate-600 leading-relaxed text-lg">
                     ส่งมอบโซลูชันเทคโนโลยีที่ทันสมัย ด้วยประสบการณ์กว่า 10 ปี
-                    บริการด้วยความเข้าใจผู้ใช้งานจริง 
-                    ตอบโจทย์ทั้งภาครัฐ เอกชน และชุมชนท้องถิ่น ด้วยมาตรฐานสากล 
+                    บริการด้วยความเข้าใจผู้ใช้งานจริง
+                    ตอบโจทย์ทั้งภาครัฐ เอกชน และชุมชนท้องถิ่น ด้วยมาตรฐานสากล
                   </p>
                 </div>
               </div>
@@ -411,7 +370,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Core Values */}
+        {/* Core Values - (No changes needed here) */}
         <section className="py-24 px-4 bg-gradient-to-br from-emerald-50 via-teal-50 to-sky-50">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
@@ -479,7 +438,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Executives */}
+        {/* Executives - (No changes needed here) */}
         <section className="py-24 px-4 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
@@ -525,7 +484,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ISO Standards */}
+        {/* ISO Standards - (No changes needed here) */}
         <section className="py-24 px-4 bg-gradient-to-br from-emerald-50 via-teal-50 to-sky-50">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
@@ -613,7 +572,7 @@ export default function Home() {
           )}
         </section>
 
-        {/* Services */}
+        {/* Services - (No changes needed here) */}
         <section id="บริการ" className="py-24 px-4 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
@@ -622,8 +581,6 @@ export default function Home() {
                   บริการครบวงจร
                 </span>
               </div>
-           
-
               <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-4">
                 บริการของเรา
               </h2>
@@ -665,230 +622,302 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Products */}
-        <section
-          id="สินค้า"
-          className="py-24 px-4 bg-gradient-to-br from-emerald-50 via-teal-50 to-sky-50"
-        >
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <div className="inline-block px-4 py-2 bg-white rounded-full mb-4 shadow-md">
-                <span className="text-emerald-700 font-semibold text-sm">
-                  ผลิตภัณฑ์คุณภาพ
-                </span>
-              </div>
-              <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-4">
-                สินค้าของเรา
-              </h2>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                ผลิตภัณฑ์และโซลูชันที่ตอบโจทย์ทุกความต้องการ
-              </p>
-              <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto mt-6" />
+        {/* Products (สินค้า) - ปรับปรุง */}
+        {/* --- NEW PRODUCT SHOWCASE SECTION --- */}
+       <section id="สินค้า" className="py-24 px-4 bg-slate-50 overflow-hidden relative">
+      <div className="max-w-7xl mx-auto">
+        
+        {/* Header */}
+        <div className="text-center mb-16">
+            <div className="inline-block px-4 py-2 bg-white rounded-full mb-4 shadow-md">
+                <span className="text-emerald-700 font-semibold text-sm">ไฮไลท์ผลิตภัณฑ์</span>
             </div>
+            <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-4">กลุ่มสินค้าแนะนำ</h2>
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                นวัตกรรมทางการแพทย์และระบบไฟฟ้ามาตรฐานสากล
+            </p>
+            <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto mt-6" />
+        </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              {products.map((product, idx) => (
-                <div
-                  key={idx}
-                  className="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-3"
-                >
-                  <div className="aspect-square overflow-hidden relative">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="absolute top-4 right-4">
-                      <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-emerald-700 text-xs font-bold rounded-full shadow-lg">
-                        {product.category}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-6 bg-gradient-to-br from-white to-emerald-50">
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">
-                      {product.name}
-                    </h3>
-                    <button className="text-emerald-700 font-semibold hover:text-teal-700 transition-colors inline-flex items-center">
-                      ดูรายละเอียด <ChevronRight size={18} className="ml-1" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+        {/* Dual Category Showcase */}
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+          
+          {/* 1. Medical Zone */}
+          <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden flex flex-col h-[600px]">
+            <div className="p-6 bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-100 flex justify-between items-center z-10 relative">
+               <div>
+                  <h3 className="text-2xl font-bold text-emerald-800 flex items-center gap-2">
+                      <span className="text-3xl">🏥</span> อุปกรณ์การแพทย์
+                  </h3>
+                  <p className="text-emerald-600 text-sm">Medical & Healthcare</p>
+               </div>
             </div>
-
-            <div className="text-center">
-              <button className="px-10 py-5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-full font-semibold hover:shadow-2xl transform hover:-translate-y-1 transition-all text-lg inline-flex items-center space-x-2">
-                <span>ดูสินค้าทั้งหมด</span>
-                <ChevronRight size={24} />
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* News */}
-        <section id="ข่าวสาร" className="py-24 px-4 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <div className="inline-block px-4 py-2 bg-gradient-to-r from-emerald-100 to-teal-100 rounded-full mb-4">
-                <span className="text-emerald-700 font-semibold text-sm">
-                  อัพเดทล่าสุด
-                </span>
-              </div>
-              <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-4">
-                ข่าวสาร
-              </h2>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                ติดตามความเคลื่อนไหวและกิจกรรมล่าสุดของเรา
-              </p>
-              <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto mt-6" />
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {news.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-3 border border-slate-100"
-                >
-                  <div className="aspect-video overflow-hidden relative">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                    <div className="absolute bottom-4 left-4">
-                      <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-emerald-700 text-sm font-bold rounded-full shadow-lg">
-                        {item.date}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-8">
-                    <h3 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2 leading-tight">
-                      {item.title}
-                    </h3>
-                    <p className="text-slate-600 mb-4 line-clamp-2">
-                      {item.excerpt}
-                    </p>
-                    <a
-                      href="#"
-                      className="text-emerald-700 font-semibold hover:text-teal-700 transition-colors inline-flex items-center group-hover:translate-x-2 transition-transform"
+            
+            <div className="relative flex-grow overflow-hidden pause-hover bg-slate-50/50">
+               <div className="absolute w-full p-6 space-y-4 animate-scroll-y">
+                  {getScrollItems(medicalProducts).map((product, idx) => (
+                    <div 
+                      key={`${product.id}-med-${idx}`}
+                      className="flex bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer border border-slate-100 items-center gap-4 group"
+                      onClick={() => setSelectedProduct(product)}
                     >
-                      อ่านเพิ่มเติม <ChevronRight size={20} className="ml-1" />
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="text-center mt-12">
-              <button className="px-8 py-4 border-2 border-emerald-600 text-emerald-700 rounded-full font-semibold hover:bg-emerald-50 transition-all">
-                ดูข่าวสารทั้งหมด
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* Clients – Auto Carousel */}
-        <section id="ลูกค้า" className="py-16 px-4 bg-white relative">
-  <div className="max-w-6xl mx-auto">
-    <div className="text-center mb-10">
-      <h2 className="text-3xl md:text-5xl font-bold text-slate-900">
-        ลูกค้าที่ไว้วางใจ
-      </h2>
-      <p className="text-slate-600 mt-3">
-        หน่วยงานและองค์กรชั้นนำทั่วประเทศ
-      </p>
-      <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto mt-4" />
-    </div>
-
-    {/* กล่องรวม Carousel */}
-    <div className="relative w-full overflow-hidden">
-
-      {/* ปุ่มเลื่อนซ้าย */}
-      <button
-        onClick={() =>
-          setCurrentIndex(
-            (prev) => (prev - 1 + clients.length) % clients.length
-          )
-        }
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-20 
-          bg-white/90 hover:bg-emerald-100 shadow-lg border border-slate-200 
-          w-10 h-10 rounded-full flex items-center justify-center 
-          hover:scale-110 transition"
-      >
-        ‹
-      </button>
-
-      {/* รายการโลโก้ Carousel */}
-      <div
-        className="flex transition-transform duration-700 ease-out"
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-      >
-        {clients.map((client, idx) => (
-          <div
-            key={idx}
-            className="min-w-full flex justify-center px-6"
-          >
-            <div className="bg-white/90 backdrop-blur-lg p-6 rounded-3xl shadow-lg border border-slate-100 w-72 flex flex-col items-center hover:shadow-2xl transition">
-              <div className="w-28 h-28 bg-emerald-50 rounded-2xl flex items-center justify-center shadow-inner">
-                <Image
-                  src={client.logo}
-                  alt={client.name}
-                  width={120}
-                  height={120}
-                  className="object-contain"
-                />
-              </div>
-              <p className="text-center text-sm font-semibold mt-4 line-clamp-2 text-slate-800">
-                {client.name}
-              </p>
-              {client.sector && (
-                <p className="text-xs text-slate-500 mt-1">
-                  {client.sector}
-                </p>
-              )}
+                       <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
+                          <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                       </div>
+                       <div className="flex-grow">
+                          <h4 className="font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">{product.name}</h4>
+                          <p className="text-xs text-slate-500 line-clamp-2 mt-1">{product.detail}</p>
+                          <span className="text-xs text-emerald-500 font-semibold mt-2 inline-flex items-center">
+                             ดูรายละเอียด <ChevronRight size={14} />
+                          </span>
+                       </div>
+                    </div>
+                  ))}
+               </div>
+               <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none" />
+               <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none" />
             </div>
           </div>
-        ))}
+
+          {/* 2. Electrical Zone */}
+          <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden flex flex-col h-[600px]">
+            <div className="p-6 bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-100 flex justify-between items-center z-10 relative">
+               <div>
+                  <h3 className="text-2xl font-bold text-amber-800 flex items-center gap-2">
+                      <span className="text-3xl">⚡</span> อุปกรณ์ไฟฟ้า
+                  </h3>
+                  <p className="text-amber-600 text-sm">Electrical & Power</p>
+               </div>
+            </div>
+            
+            <div className="relative flex-grow overflow-hidden pause-hover bg-slate-50/50">
+               <div className="absolute w-full p-6 space-y-4 animate-scroll-y" style={{ animationDuration: '45s' }}>
+                  {getScrollItems(electricalProducts).map((product, idx) => (
+                    <div 
+                      key={`${product.id}-elec-${idx}`}
+                      className="flex bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer border border-slate-100 items-center gap-4 group"
+                      onClick={() => setSelectedProduct(product)}
+                    >
+                       <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
+                          <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                       </div>
+                       <div className="flex-grow">
+                          <h4 className="font-bold text-slate-800 group-hover:text-amber-600 transition-colors">{product.name}</h4>
+                          <p className="text-xs text-slate-500 line-clamp-2 mt-1">{product.detail}</p>
+                          <span className="text-xs text-amber-500 font-semibold mt-2 inline-flex items-center">
+                             ดูรายละเอียด <ChevronRight size={14} />
+                          </span>
+                       </div>
+                    </div>
+                  ))}
+               </div>
+               <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none" />
+               <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none" />
+            </div>
+          </div>
+        </div>
+
+        {/* ============================================================
+            2. ส่วนปุ่มกดไปหน้าสินค้าทั้งหมด (วางต่อจาก Grid)
+           ============================================================ */}
+        <div className="text-center mt-12">
+            <Link href="/products" className="px-10 py-4 bg-slate-800 text-white rounded-full font-semibold hover:bg-slate-700 hover:shadow-lg transform hover:-translate-y-1 transition-all inline-flex items-center space-x-2">
+                <span>ค้นหาสินค้าทุกหมวดหมู่</span>
+                <ChevronRight />
+            </Link>
+        </div>
+
       </div>
 
-      {/* ปุ่มเลื่อนขวา */}
-      <button
-        onClick={() => setCurrentIndex((prev) => (prev + 1) % clients.length)}
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-20 
-          bg-white/90 hover:bg-emerald-100 shadow-lg border border-slate-200 
-          w-10 h-10 rounded-full flex items-center justify-center 
-          hover:scale-110 transition"
-      >
-        ›
-      </button>
-    </div>
-
-    {/* จุด Indicator */}
-    <div className="flex justify-center mt-6 gap-2">
-      {clients.map((_, idx) => (
+      {/* Modal (Popup) */}
+      {selectedProduct && (
         <div
-          key={idx}
-          className={`h-2 rounded-full transition-all ${
-            idx === currentIndex
-              ? "bg-emerald-600 w-8"
-              : "bg-slate-300 w-2"
-          }`}
-        />
-      ))}
-    </div>
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedProduct(null)}
+        >
+          <div
+            className="bg-white rounded-3xl overflow-hidden shadow-2xl max-w-4xl w-full grid md:grid-cols-2 animate-in fade-in zoom-in-50 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="aspect-square md:aspect-auto relative bg-slate-100">
+              <img 
+                src={selectedProduct.image} 
+                alt={selectedProduct.name} 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            <div className="p-8 flex flex-col relative h-full max-h-[60vh] md:max-h-none overflow-y-auto">
+              <button 
+                onClick={() => setSelectedProduct(null)} 
+                className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-red-500 transition-colors"
+              >
+                 <X />
+              </button>
 
-    <p className="text-center text-slate-500 mt-8">
-      มากกว่า{" "}
-      <span className="text-emerald-700 font-bold">10+</span>{" "}
-      องค์กรทั่วประเทศ
-    </p>
-  </div>
-</section>
+              {selectedProduct.category && (
+                  <span className="inline-block self-start px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-bold mb-4">
+                    {selectedProduct.category}
+                  </span>
+              )}
+
+              <h2 className="text-3xl font-bold text-slate-900 mb-4">{selectedProduct.name}</h2>
+              
+              <div className="prose prose-slate text-slate-600 mb-8 flex-grow">
+                 <p className="leading-relaxed">{selectedProduct.detail}</p>
+                 {selectedProduct.description && (
+                    <p className="mt-4">{selectedProduct.description}</p>
+                 )}
+              </div>
+
+              <div className="mt-auto pt-6 border-t border-slate-100">
+   <button 
+     onClick={() => {
+       setSelectedProduct(null); // 1. สั่งปิดหน้าต่างสินค้า
+       setIsContactOpen(true);   // 2. สั่งเปิดหน้าต่างติดต่อ (Slide-up) ทันที
+     }}
+     className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-colors shadow-lg shadow-emerald-200"
+   >
+      ติดต่อสอบถามสินค้านี้
+   </button>
+</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+    </section>
+
+        {/* News (ข่าวสาร) - ปรับปรุง */}
+        {/* News (ข่าวสาร) - ดีไซน์ใหม่: Interactive Magazine */}
+        <section id="ข่าวสาร" className="py-24 px-4 bg-white overflow-hidden">
+          <div className="max-w-7xl mx-auto">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+              <div className="text-left">
+                <div className="inline-block px-4 py-2 bg-emerald-50 rounded-full mb-4 border border-emerald-100">
+                  <span className="text-emerald-700 font-bold text-sm flex items-center gap-2">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    NEWS UPDATE
+                  </span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold text-slate-900">
+                  ข่าวสารและกิจกรรม
+                </h2>
+              </div>
+              
+              <div className="mt-6 md:mt-0">
+                 <Link href="/news" className="text-slate-500 hover:text-emerald-600 font-semibold flex items-center gap-2 transition-colors group">
+                    ดูทั้งหมด <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform"/>
+                 </Link>
+              </div>
+            </div>
+
+            {/* Main Content: Split Layout */}
+            <div className="grid lg:grid-cols-12 gap-8 h-[600px] md:h-[500px]">
+              
+              {/* ส่วนซ้าย: รูปภาพใหญ่ (Interactive Display) */}
+              <div className="lg:col-span-7 relative h-full rounded-3xl overflow-hidden shadow-2xl group">
+                {/* Link ครอบเพื่อให้คลิกที่รูปไปหน้าข่าวได้เลย */}
+                <Link href={`/news/${activeNews?.id || news[0].id}`} className="block h-full w-full cursor-pointer">
+                    {/* Image Background */}
+                    <div className="absolute inset-0 bg-slate-900">
+                    <img 
+                        key={activeNews?.image} 
+                        src={activeNews?.image || news[0].image} 
+                        alt="News Cover" 
+                        className="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105 animate-in fade-in"
+                    />
+                    </div>
+                    
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
+
+                    {/* Content Overlay */}
+                    <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full">
+                    <div className="flex items-center gap-4 mb-4">
+                        <span className="px-3 py-1 bg-emerald-600 text-white text-xs font-bold rounded-md shadow-lg">
+                            LATEST
+                        </span>
+                        <span className="text-slate-300 text-sm font-medium flex items-center gap-2">
+                            <span className="w-1 h-1 bg-slate-300 rounded-full"/> 
+                            {activeNews?.date || news[0].date}
+                        </span>
+                    </div>
+                    <h3 className="text-2xl md:text-4xl font-bold text-white mb-4 leading-tight line-clamp-2">
+                        {activeNews?.title || news[0].title}
+                    </h3>
+                    <p className="text-slate-300 text-sm md:text-base line-clamp-2 max-w-xl mb-6">
+                        {activeNews?.excerpt || news[0].excerpt}
+                    </p>
+                    
+                    {/* ปุ่มอ่านรายละเอียด (ปรับปรุงดีไซน์) */}
+                    <div className="inline-flex items-center gap-2 text-white font-bold border-b-2 border-emerald-500 pb-1 hover:text-emerald-400 hover:border-emerald-400 transition-all group/link">
+                        อ่านรายละเอียด 
+                        <ChevronRight size={20} className="transform transition-transform group-hover/link:translate-x-1" />
+                    </div>
+                    </div>
+                </Link>
+              </div>
+
+              {/* ส่วนขวา: รายการข่าว (Scrollable List) */}
+              <div className="lg:col-span-5 flex flex-col h-full overflow-hidden">
+                <div className="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
+                  {news.map((item, idx) => {
+                    const isActive = activeNews?.title === item.title;
+                    return (
+                        // ใช้ Link ครอบ list item ด้วย เพื่อให้คลิกแล้วไปอ่านข่าวได้เหมือนกัน
+                      <Link 
+                        href={`/news/${item.id}`}
+                        key={idx}
+                        onMouseEnter={() => setActiveNews(item)} // ยังคงเปลี่ยนรูปเมื่อ Hover
+                        className={`block p-4 rounded-2xl cursor-pointer transition-all duration-300 border-2 ${
+                          isActive 
+                            ? "bg-emerald-50 border-emerald-500 shadow-md translate-x-2" 
+                            : "bg-white border-transparent hover:bg-slate-50 hover:border-slate-200"
+                        }`}
+                      >
+                        <div className="flex gap-4 items-center">
+                           {/* Date Box */}
+                           <div className={`flex-shrink-0 w-16 h-16 rounded-xl flex flex-col items-center justify-center transition-colors ${
+                             isActive ? "bg-emerald-600 text-white" : "bg-slate-100 text-slate-500"
+                           }`}>
+                              <span className="text-xl font-bold leading-none">{item.date.split(' ')[0]}</span>
+                              <span className="text-[10px] uppercase mt-1">{item.date.split(' ')[1]}</span>
+                           </div>
+                           
+                           {/* Text Info */}
+                           <div className="flex-grow">
+                              <h4 className={`font-bold text-sm md:text-base line-clamp-2 mb-1 ${
+                                isActive ? "text-emerald-900" : "text-slate-700"
+                              }`}>
+                                {item.title}
+                              </h4>
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-slate-400">Admin Post</span>
+                                {isActive && <ChevronRight size={16} className="text-emerald-600 animate-pulse"/>}
+                              </div>
+                           </div>
+                        </div>
+                      </Link>
+                    )
+                  })}
+                </div>
+                
+                {/* Decorative footer for list */}
+                <div className="mt-4 pt-4 border-t border-slate-100 text-center">
+                   <p className="text-xs text-slate-400">เลื่อนเพื่อดูข่าวสารเพิ่มเติม</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
 
 
-        {/* Footer */}
+        {/* Footer - (No changes needed here) */}
         <footer className="bg-gradient-to-br from-slate-900 via-emerald-950 to-teal-900 text-white py-20 px-4">
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-4 gap-12 mb-16">
@@ -920,7 +949,7 @@ export default function Home() {
 
                 <div className="flex space-x-4">
                   <a
-                    href="https://www.facebook.com"
+                    href="https://www.facebook.com/profile.php?id=61573842487909"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-12 h-12 bg-white/10 hover:bg-gradient-to-br hover:from-sky-500 hover:to-sky-600 rounded-xl flex items-center justify-center transition-all transform hover:scale-110"
@@ -1037,7 +1066,7 @@ export default function Home() {
             <div className="border-t border-white/10 pt-8">
               <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                 <p className="text-slate-400 text-center md:text-left">
-                  &copy; 2025 A.R.T EXPONENTIAL. All rights reserved.
+                  © 2025 A.R.T EXPONENTIAL. All rights reserved.
                 </p>
                 <div className="flex space-x-6 text-slate-400 text-sm">
                   <a href="#" className="hover:text-white transition-colors">
@@ -1078,7 +1107,7 @@ export default function Home() {
               <div className="space-y-3 max-h-96 overflow-y-auto">
                 {/* Facebook */}
                 <a
-                  href="https://www.facebook.com"
+                  href="https://www.facebook.com/profile.php?id=61573842487909"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-4 p-4 bg-gradient-to-r from-sky-50 to-sky-100 rounded-2xl hover:from-sky-100 hover:to-sky-200 transition-all group transform hover:scale-105"
@@ -1228,4 +1257,4 @@ export default function Home() {
       </div>
     </>
   );
-}
+};
