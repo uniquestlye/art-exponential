@@ -295,7 +295,7 @@ export default function Home() {
         {/* Hero Section */}
         <section
           id="หน้าแรก"
-          className="relative pt-32 pb-24 px-4 overflow-hidden"
+          className="relative pt-32 pb-32 px-4 overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/5 via-teal-600/5 to-sky-500/5" />
           <div className="absolute top-20 right-0 w-96 h-96 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full blur-3xl opacity-20 animate-pulse" />
