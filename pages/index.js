@@ -1,9 +1,10 @@
-// pages/index.js (โค้ดที่ได้รับการปรับปรุง)
+// pages/index.js
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { products, news } from "../data/mockData";
+
 
 import {
   Menu,
@@ -22,6 +23,8 @@ import {
   Target,
   Users,
   Lightbulb,
+  Building2,
+  CheckCircle2, // เพิ่ม Icon
 } from "lucide-react";
 
 /* ---------- STATIC DATA (นอก Component) ---------- */
@@ -67,8 +70,6 @@ const services = [
   },
 ];
 
-
-
 const clients = [
   {
     name: "กระทรวงการอุดมศึกษา วิทยาศาสตร์ วิจัยและนวัตกรรม",
@@ -79,25 +80,25 @@ const clients = [
   {
     name: "กรมส่งเสริมการปกครองท้องถิ่น",
     short: "DLA",
-    sector: "องค์กรปกครองส่วนท้องถิ่น",
+    sector: "ท้องถิ่น",
     logo: "/images/department.png",
   },
   {
     name: "สำนักงานส่งเสริมวิสาหกิจขนาดกลางและขนาดย่อม",
     short: "สสว.",
-    sector: "วิสาหกิจขนาดกลางและขนาดย่อม",
+    sector: "SME",
     logo: "/images/ssw.jpg",
   },
   {
     name: "มหาวิทยาลัยราชภัฏพระนครศรีอยุธยา",
     short: "PSAU",
-    sector: "สถาบันอุดมศึกษา",
+    sector: "มหาวิทยาลัย",
     logo: "/images/dechudom.png",
   },
   {
     name: "กรมควบคุมโรค",
     short: "DDC",
-    sector: "กระทรวงสาธารณสุข",
+    sector: "สาธารณสุข",
     logo: "/images/diseasecontrol.jpg",
   },
   {
@@ -109,19 +110,19 @@ const clients = [
   {
     name: "องค์การบริหารส่วนจังหวัด ",
     short: "อบจ.",
-    sector: "องค์กรปกครองส่วนท้องถิ่น",
+    sector: "ท้องถิ่น",
     logo: "/images/busubon.jpg",
   },
   {
     name: "กรมสุขภาพจิต",
     short: "DMH",
-    sector: "กระทรวงสาธารณสุข",
+    sector: "สาธารณสุข",
     logo: "/images/health.jpg",
   },
   {
     name: "เทศบาลนครอุบลราชธานี",
     short: "เทศบาลนครอุบลฯ",
-    sector: "เทศบาลนคร",
+    sector: "เทศบาล",
     logo: "/images/tessabanubon.png",
   },
   {
@@ -139,18 +140,17 @@ export default function Home() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openImage, setOpenImage] = useState(null); // สำหรับ ISO
-  const [currentIndex, setCurrentIndex] = useState(0); // สำหรับ Clients Carousel
-  const [selectedProduct, setSelectedProduct] = useState(null); // <<<< เพิ่ม: สำหรับ Product Detail Modal
-  const [activeNews, setActiveNews] = useState(news[0]); // เพิ่มบรรทัดนี้สำหรับเก็บข่าวที่กำลังโชว์
+  const [selectedProduct, setSelectedProduct] = useState(null); // สำหรับ Product Detail Modal
+  const [activeNews, setActiveNews] = useState(news[0]); // สำหรับ News
 
   // แยกหมวดหมู่สินค้า
-  const medicalProducts = products.filter(p => p.category === "การแพทย์");
-  const electricalProducts = products.filter(p => p.category === "ไฟฟ้า");
+  const medicalProducts = products.filter((p) => p.category === "การแพทย์");
+  const electricalProducts = products.filter((p) => p.category === "ไฟฟ้า");
 
   // ฟังก์ชันสำหรับ Infinite Scroll Loop (Clone ข้อมูลเพื่อให้เลื่อนไม่สะดุด)
   const getScrollItems = (items) => [...items, ...items, ...items];
-  
-// ตรวจจับการเลื่อนหน้า
+
+  // ตรวจจับการเลื่อนหน้า
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -159,13 +159,9 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // auto-slide ลูกค้า
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % clients.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
+  // แบ่ง Clients เป็น 2 แถวสำหรับ Accordion View
+  const firstRowClients = clients.slice(0, 5);
+  const secondRowClients = clients.slice(5, 10);
 
   return (
     <>
@@ -178,8 +174,27 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
+      {/* Global Styles */}
+      <style jsx global>{`
+        @keyframes scroll-y {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-50%); }
+        }
+        .animate-scroll-y {
+          animation: scroll-y 30s linear infinite;
+        }
+        /* ซ่อน Scrollbar แต่ยังเลื่อนได้ */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+      `}</style>
+
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-sky-50 to-teal-50">
-        {/* Navbar - (No changes needed here) */}
+        {/* Navbar */}
         <nav
           className={`fixed w-full z-50 transition-all duration-300 ${
             scrolled
@@ -210,18 +225,23 @@ export default function Home() {
               </div>
 
               <div className="hidden md:flex space-x-8">
-                {["หน้าแรก", "เกี่ยวกับ", "บริการ", "สินค้า", "ข่าวสาร", "ลูกค้า"].map(
-                  (item) => (
-                    <a
-                      key={item}
-                      href={`#${item}`}
-                      className="text-slate-700 hover:text-emerald-600 font-medium transition-colors relative group py-2"
-                    >
-                      {item}
-                      <span className="absolute -bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 transition-all group-hover:w-full"></span>
-                    </a>
-                  )
-                )}
+                {[
+                  "หน้าแรก",
+                  "เกี่ยวกับ",
+                  "บริการ",
+                  "สินค้า",
+                  "ข่าวสาร",
+                  "ลูกค้า",
+                ].map((item) => (
+                  <a
+                    key={item}
+                    href={`#${item}`}
+                    className="text-slate-700 hover:text-emerald-600 font-medium transition-colors relative group py-2"
+                  >
+                    {item}
+                    <span className="absolute -bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 transition-all group-hover:w-full"></span>
+                  </a>
+                ))}
               </div>
 
               <button
@@ -236,24 +256,29 @@ export default function Home() {
           {isMenuOpen && (
             <div className="md:hidden bg-white/95 backdrop-blur-lg shadow-lg border-t border-slate-100">
               <div className="px-4 py-6 space-y-4">
-                {["หน้าแรก", "เกี่ยวกับ", "บริการ", "สินค้า", "ข่าวสาร", "ลูกค้า"].map(
-                  (item) => (
-                    <a
-                      key={item}
-                      href={`#${item}`}
-                      onClick={() => setIsMenuOpen(false)}
-                      className="block text-slate-700 hover:text-emerald-600 font-medium transition-colors py-2 border-b border-slate-100"
-                    >
-                      {item}
-                    </a>
-                  )
-                )}
+                {[
+                  "หน้าแรก",
+                  "เกี่ยวกับ",
+                  "บริการ",
+                  "สินค้า",
+                  "ข่าวสาร",
+                  "ลูกค้า",
+                ].map((item) => (
+                  <a
+                    key={item}
+                    href={`#${item}`}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block text-slate-700 hover:text-emerald-600 font-medium transition-colors py-2 border-b border-slate-100"
+                  >
+                    {item}
+                  </a>
+                ))}
               </div>
             </div>
           )}
         </nav>
 
-        {/* Hero Section - (No changes needed here) */}
+        {/* Hero Section */}
         <section
           id="หน้าแรก"
           className="relative pt-32 pb-24 px-4 overflow-hidden"
@@ -281,8 +306,7 @@ export default function Home() {
                   <span className="text-slate-900">EXPONENTIAL</span>
                 </h1>
                 <p className="text-xl text-slate-600 leading-relaxed">
-                  ผู้นำด้านเทคโนโลยีและนวัตกรรม
-                  มุ่งมั่นสร้างสรรค์โซลูชันที่ทรงพลังเพื่ออนาคตที่ดีกว่า
+                  ผู้นำด้านเทคโนโลยีและนวัตกรรม มุ่งมั่นสร้างสรรค์โซลูชันที่ทรงพลังเพื่ออนาคตที่ดีกว่า
                   ด้วยประสบการณ์กว่า 10 ปี
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -314,7 +338,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* About Section - (No changes needed here) */}
+        {/* About Section */}
         <section id="เกี่ยวกับ" className="py-24 px-4 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
@@ -361,8 +385,8 @@ export default function Home() {
                   </h3>
                   <p className="text-slate-600 leading-relaxed text-lg">
                     ส่งมอบโซลูชันเทคโนโลยีที่ทันสมัย ด้วยประสบการณ์กว่า 10 ปี
-                    บริการด้วยความเข้าใจผู้ใช้งานจริง
-                    ตอบโจทย์ทั้งภาครัฐ เอกชน และชุมชนท้องถิ่น ด้วยมาตรฐานสากล
+                    บริการด้วยความเข้าใจผู้ใช้งานจริง ตอบโจทย์ทั้งภาครัฐ เอกชน
+                    และชุมชนท้องถิ่น ด้วยมาตรฐานสากล
                   </p>
                 </div>
               </div>
@@ -370,7 +394,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Core Values - (No changes needed here) */}
+        {/* Core Values */}
         <section className="py-24 px-4 bg-gradient-to-br from-emerald-50 via-teal-50 to-sky-50">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
@@ -438,7 +462,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Executives - (No changes needed here) */}
+        {/* Executives */}
         <section className="py-24 px-4 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
@@ -484,7 +508,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ISO Standards - (No changes needed here) */}
+        {/* ISO Standards */}
         <section className="py-24 px-4 bg-gradient-to-br from-emerald-50 via-teal-50 to-sky-50">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
@@ -572,7 +596,7 @@ export default function Home() {
           )}
         </section>
 
-        {/* Services - (No changes needed here) */}
+        {/* Services */}
         <section id="บริการ" className="py-24 px-4 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
@@ -622,176 +646,199 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Products (สินค้า) - ปรับปรุง */}
-        {/* --- NEW PRODUCT SHOWCASE SECTION --- */}
-       <section id="สินค้า" className="py-24 px-4 bg-slate-50 overflow-hidden relative">
-      <div className="max-w-7xl mx-auto">
-        
-        {/* Header */}
-        <div className="text-center mb-16">
-            <div className="inline-block px-4 py-2 bg-white rounded-full mb-4 shadow-md">
-                <span className="text-emerald-700 font-semibold text-sm">ไฮไลท์ผลิตภัณฑ์</span>
-            </div>
-            <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-4">กลุ่มสินค้าแนะนำ</h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                นวัตกรรมทางการแพทย์และระบบไฟฟ้ามาตรฐานสากล
-            </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto mt-6" />
-        </div>
-
-        {/* Dual Category Showcase */}
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-          
-          {/* 1. Medical Zone */}
-          <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden flex flex-col h-[600px]">
-            <div className="p-6 bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-100 flex justify-between items-center z-10 relative">
-               <div>
-                  <h3 className="text-2xl font-bold text-emerald-800 flex items-center gap-2">
-                      <span className="text-3xl">🏥</span> อุปกรณ์การแพทย์
-                  </h3>
-                  <p className="text-emerald-600 text-sm">Medical & Healthcare</p>
-               </div>
-            </div>
-            
-            <div className="relative flex-grow overflow-hidden pause-hover bg-slate-50/50">
-               <div className="absolute w-full p-6 space-y-4 animate-scroll-y">
-                  {getScrollItems(medicalProducts).map((product, idx) => (
-                    <div 
-                      key={`${product.id}-med-${idx}`}
-                      className="flex bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer border border-slate-100 items-center gap-4 group"
-                      onClick={() => setSelectedProduct(product)}
-                    >
-                       <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
-                          <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
-                       </div>
-                       <div className="flex-grow">
-                          <h4 className="font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">{product.name}</h4>
-                          <p className="text-xs text-slate-500 line-clamp-2 mt-1">{product.detail}</p>
-                          <span className="text-xs text-emerald-500 font-semibold mt-2 inline-flex items-center">
-                             ดูรายละเอียด <ChevronRight size={14} />
-                          </span>
-                       </div>
-                    </div>
-                  ))}
-               </div>
-               <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none" />
-               <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none" />
-            </div>
-          </div>
-
-          {/* 2. Electrical Zone */}
-          <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden flex flex-col h-[600px]">
-            <div className="p-6 bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-100 flex justify-between items-center z-10 relative">
-               <div>
-                  <h3 className="text-2xl font-bold text-amber-800 flex items-center gap-2">
-                      <span className="text-3xl">⚡</span> อุปกรณ์ไฟฟ้า
-                  </h3>
-                  <p className="text-amber-600 text-sm">Electrical & Power</p>
-               </div>
-            </div>
-            
-            <div className="relative flex-grow overflow-hidden pause-hover bg-slate-50/50">
-               <div className="absolute w-full p-6 space-y-4 animate-scroll-y" style={{ animationDuration: '45s' }}>
-                  {getScrollItems(electricalProducts).map((product, idx) => (
-                    <div 
-                      key={`${product.id}-elec-${idx}`}
-                      className="flex bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer border border-slate-100 items-center gap-4 group"
-                      onClick={() => setSelectedProduct(product)}
-                    >
-                       <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
-                          <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
-                       </div>
-                       <div className="flex-grow">
-                          <h4 className="font-bold text-slate-800 group-hover:text-amber-600 transition-colors">{product.name}</h4>
-                          <p className="text-xs text-slate-500 line-clamp-2 mt-1">{product.detail}</p>
-                          <span className="text-xs text-amber-500 font-semibold mt-2 inline-flex items-center">
-                             ดูรายละเอียด <ChevronRight size={14} />
-                          </span>
-                       </div>
-                    </div>
-                  ))}
-               </div>
-               <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none" />
-               <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none" />
-            </div>
-          </div>
-        </div>
-
-        {/* ============================================================
-            2. ส่วนปุ่มกดไปหน้าสินค้าทั้งหมด (วางต่อจาก Grid)
-           ============================================================ */}
-        <div className="text-center mt-12">
-            <Link href="/products" className="px-10 py-4 bg-slate-800 text-white rounded-full font-semibold hover:bg-slate-700 hover:shadow-lg transform hover:-translate-y-1 transition-all inline-flex items-center space-x-2">
-                <span>ค้นหาสินค้าทุกหมวดหมู่</span>
-                <ChevronRight />
-            </Link>
-        </div>
-
-      </div>
-
-      {/* Modal (Popup) */}
-      {selectedProduct && (
-        <div
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-          onClick={() => setSelectedProduct(null)}
+        {/* Products (สินค้า) */}
+        <section
+          id="สินค้า"
+          className="py-24 px-4 bg-slate-50 overflow-hidden relative"
         >
-          <div
-            className="bg-white rounded-3xl overflow-hidden shadow-2xl max-w-4xl w-full grid md:grid-cols-2 animate-in fade-in zoom-in-50 duration-200"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="aspect-square md:aspect-auto relative bg-slate-100">
-              <img 
-                src={selectedProduct.image} 
-                alt={selectedProduct.name} 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-            <div className="p-8 flex flex-col relative h-full max-h-[60vh] md:max-h-none overflow-y-auto">
-              <button 
-                onClick={() => setSelectedProduct(null)} 
-                className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-red-500 transition-colors"
-              >
-                 <X />
-              </button>
-
-              {selectedProduct.category && (
-                  <span className="inline-block self-start px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-bold mb-4">
-                    {selectedProduct.category}
-                  </span>
-              )}
-
-              <h2 className="text-3xl font-bold text-slate-900 mb-4">{selectedProduct.name}</h2>
-              
-              <div className="prose prose-slate text-slate-600 mb-8 flex-grow">
-                 <p className="leading-relaxed">{selectedProduct.detail}</p>
-                 {selectedProduct.description && (
-                    <p className="mt-4">{selectedProduct.description}</p>
-                 )}
-              </div>
-
-              <div className="mt-auto pt-6 border-t border-slate-100">
-   <button 
-     onClick={() => {
-       setSelectedProduct(null); // 1. สั่งปิดหน้าต่างสินค้า
-       setIsContactOpen(true);   // 2. สั่งเปิดหน้าต่างติดต่อ (Slide-up) ทันที
-     }}
-     className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-colors shadow-lg shadow-emerald-200"
-   >
-      ติดต่อสอบถามสินค้านี้
-   </button>
-</div>
-            </div>
-          </div>
-        </div>
-      )}
-
-    </section>
-
-        {/* News (ข่าวสาร) - ปรับปรุง */}
-        {/* News (ข่าวสาร) - ดีไซน์ใหม่: Interactive Magazine */}
-        <section id="ข่าวสาร" className="py-24 px-4 bg-white overflow-hidden">
           <div className="max-w-7xl mx-auto">
             {/* Header */}
+            <div className="text-center mb-16">
+              <div className="inline-block px-4 py-2 bg-white rounded-full mb-4 shadow-md">
+                <span className="text-emerald-700 font-semibold text-sm">
+                  ไฮไลท์ผลิตภัณฑ์
+                </span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-4">
+                กลุ่มสินค้าแนะนำ
+              </h2>
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                นวัตกรรมทางการแพทย์และระบบไฟฟ้ามาตรฐานสากล
+              </p>
+              <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto mt-6" />
+            </div>
+
+            {/* Dual Category Showcase */}
+            <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+              {/* 1. Medical Zone */}
+              <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden flex flex-col h-[600px]">
+                <div className="p-6 bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-100 flex justify-between items-center z-10 relative">
+                  <div>
+                    <h3 className="text-2xl font-bold text-emerald-800 flex items-center gap-2">
+                      <span className="text-3xl">🏥</span> อุปกรณ์การแพทย์
+                    </h3>
+                    <p className="text-emerald-600 text-sm">
+                      Medical & Healthcare
+                    </p>
+                  </div>
+                </div>
+
+                <div className="relative flex-grow overflow-hidden pause-hover bg-slate-50/50">
+                  <div className="absolute w-full p-6 space-y-4 animate-scroll-y">
+                    {getScrollItems(medicalProducts).map((product, idx) => (
+                      <div
+                        key={`${product.id}-med-${idx}`}
+                        className="flex bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer border border-slate-100 items-center gap-4 group"
+                        onClick={() => setSelectedProduct(product)}
+                      >
+                        <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                          />
+                        </div>
+                        <div className="flex-grow">
+                          <h4 className="font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">
+                            {product.name}
+                          </h4>
+                          <p className="text-xs text-slate-500 line-clamp-2 mt-1">
+                            {product.detail}
+                          </p>
+                          <span className="text-xs text-emerald-500 font-semibold mt-2 inline-flex items-center">
+                            ดูรายละเอียด <ChevronRight size={14} />
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none" />
+                  <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none" />
+                </div>
+              </div>
+
+              {/* 2. Electrical Zone */}
+              <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden flex flex-col h-[600px]">
+                <div className="p-6 bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-100 flex justify-between items-center z-10 relative">
+                  <div>
+                    <h3 className="text-2xl font-bold text-amber-800 flex items-center gap-2">
+                      <span className="text-3xl">⚡</span> อุปกรณ์ไฟฟ้า
+                    </h3>
+                    <p className="text-amber-600 text-sm">Electrical & Power</p>
+                  </div>
+                </div>
+
+                <div className="relative flex-grow overflow-hidden pause-hover bg-slate-50/50">
+                  <div
+                    className="absolute w-full p-6 space-y-4 animate-scroll-y"
+                    style={{ animationDuration: "45s" }}
+                  >
+                    {getScrollItems(electricalProducts).map((product, idx) => (
+                      <div
+                        key={`${product.id}-elec-${idx}`}
+                        className="flex bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer border border-slate-100 items-center gap-4 group"
+                        onClick={() => setSelectedProduct(product)}
+                      >
+                        <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                          />
+                        </div>
+                        <div className="flex-grow">
+                          <h4 className="font-bold text-slate-800 group-hover:text-amber-600 transition-colors">
+                            {product.name}
+                          </h4>
+                          <p className="text-xs text-slate-500 line-clamp-2 mt-1">
+                            {product.detail}
+                          </p>
+                          <span className="text-xs text-amber-500 font-semibold mt-2 inline-flex items-center">
+                            ดูรายละเอียด <ChevronRight size={14} />
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none" />
+                  <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none" />
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center mt-12">
+              <Link
+                href="/products"
+                className="px-10 py-4 bg-slate-800 text-white rounded-full font-semibold hover:bg-slate-700 hover:shadow-lg transform hover:-translate-y-1 transition-all inline-flex items-center space-x-2"
+              >
+                <span>ค้นหาสินค้าทุกหมวดหมู่</span>
+                <ChevronRight />
+              </Link>
+            </div>
+          </div>
+
+          {/* Modal */}
+          {selectedProduct && (
+            <div
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+              onClick={() => setSelectedProduct(null)}
+            >
+              <div
+                className="bg-white rounded-3xl overflow-hidden shadow-2xl max-w-4xl w-full grid md:grid-cols-2 animate-in fade-in zoom-in-50 duration-200"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="aspect-square md:aspect-auto relative bg-slate-100">
+                  <img
+                    src={selectedProduct.image}
+                    alt={selectedProduct.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-8 flex flex-col relative h-full max-h-[60vh] md:max-h-none overflow-y-auto">
+                  <button
+                    onClick={() => setSelectedProduct(null)}
+                    className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-red-500 transition-colors"
+                  >
+                    <X />
+                  </button>
+
+                  {selectedProduct.category && (
+                    <span className="inline-block self-start px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-bold mb-4">
+                      {selectedProduct.category}
+                    </span>
+                  )}
+
+                  <h2 className="text-3xl font-bold text-slate-900 mb-4">
+                    {selectedProduct.name}
+                  </h2>
+
+                  <div className="prose prose-slate text-slate-600 mb-8 flex-grow">
+                    <p className="leading-relaxed">{selectedProduct.detail}</p>
+                    {selectedProduct.description && (
+                      <p className="mt-4">{selectedProduct.description}</p>
+                    )}
+                  </div>
+
+                  <div className="mt-auto pt-6 border-t border-slate-100">
+                    <button
+                      onClick={() => {
+                        setSelectedProduct(null);
+                        setIsContactOpen(true);
+                      }}
+                      className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-colors shadow-lg shadow-emerald-200"
+                    >
+                      ติดต่อสอบถามสินค้านี้
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* News (ข่าวสาร) */}
+        <section id="ข่าวสาร" className="py-24 px-4 bg-white overflow-hidden">
+          <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
               <div className="text-left">
                 <div className="inline-block px-4 py-2 bg-emerald-50 rounded-full mb-4 border border-emerald-100">
@@ -807,117 +854,256 @@ export default function Home() {
                   ข่าวสารและกิจกรรม
                 </h2>
               </div>
-              
+
               <div className="mt-6 md:mt-0">
-                 <Link href="/news" className="text-slate-500 hover:text-emerald-600 font-semibold flex items-center gap-2 transition-colors group">
-                    ดูทั้งหมด <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform"/>
-                 </Link>
+                <Link
+                  href="/news"
+                  className="text-slate-500 hover:text-emerald-600 font-semibold flex items-center gap-2 transition-colors group"
+                >
+                  ดูทั้งหมด{" "}
+                  <ChevronRight
+                    size={20}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
+                </Link>
               </div>
             </div>
 
-            {/* Main Content: Split Layout */}
             <div className="grid lg:grid-cols-12 gap-8 h-[600px] md:h-[500px]">
-              
-              {/* ส่วนซ้าย: รูปภาพใหญ่ (Interactive Display) */}
+              {/* ส่วนซ้าย: รูปภาพใหญ่ */}
               <div className="lg:col-span-7 relative h-full rounded-3xl overflow-hidden shadow-2xl group">
-                {/* Link ครอบเพื่อให้คลิกที่รูปไปหน้าข่าวได้เลย */}
-                <Link href={`/news/${activeNews?.id || news[0].id}`} className="block h-full w-full cursor-pointer">
-                    {/* Image Background */}
-                    <div className="absolute inset-0 bg-slate-900">
-                    <img 
-                        key={activeNews?.image} 
-                        src={activeNews?.image || news[0].image} 
-                        alt="News Cover" 
-                        className="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105 animate-in fade-in"
+                <Link
+                  href={`/news/${activeNews?.id || news[0].id}`}
+                  className="block h-full w-full cursor-pointer"
+                >
+                  <div className="absolute inset-0 bg-slate-900">
+                    <img
+                      key={activeNews?.image}
+                      src={activeNews?.image || news[0].image}
+                      alt="News Cover"
+                      className="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105 animate-in fade-in"
                     />
-                    </div>
-                    
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
-
-                    {/* Content Overlay */}
-                    <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full">
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
+                  <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full">
                     <div className="flex items-center gap-4 mb-4">
-                        <span className="px-3 py-1 bg-emerald-600 text-white text-xs font-bold rounded-md shadow-lg">
-                            LATEST
-                        </span>
-                        <span className="text-slate-300 text-sm font-medium flex items-center gap-2">
-                            <span className="w-1 h-1 bg-slate-300 rounded-full"/> 
-                            {activeNews?.date || news[0].date}
-                        </span>
+                      <span className="px-3 py-1 bg-emerald-600 text-white text-xs font-bold rounded-md shadow-lg">
+                        LATEST
+                      </span>
+                      <span className="text-slate-300 text-sm font-medium flex items-center gap-2">
+                        <span className="w-1 h-1 bg-slate-300 rounded-full" />
+                        {activeNews?.date || news[0].date}
+                      </span>
                     </div>
                     <h3 className="text-2xl md:text-4xl font-bold text-white mb-4 leading-tight line-clamp-2">
-                        {activeNews?.title || news[0].title}
+                      {activeNews?.title || news[0].title}
                     </h3>
                     <p className="text-slate-300 text-sm md:text-base line-clamp-2 max-w-xl mb-6">
-                        {activeNews?.excerpt || news[0].excerpt}
+                      {activeNews?.excerpt || news[0].excerpt}
                     </p>
-                    
-                    {/* ปุ่มอ่านรายละเอียด (ปรับปรุงดีไซน์) */}
                     <div className="inline-flex items-center gap-2 text-white font-bold border-b-2 border-emerald-500 pb-1 hover:text-emerald-400 hover:border-emerald-400 transition-all group/link">
-                        อ่านรายละเอียด 
-                        <ChevronRight size={20} className="transform transition-transform group-hover/link:translate-x-1" />
+                      อ่านรายละเอียด
+                      <ChevronRight
+                        size={20}
+                        className="transform transition-transform group-hover/link:translate-x-1"
+                      />
                     </div>
-                    </div>
+                  </div>
                 </Link>
               </div>
 
-              {/* ส่วนขวา: รายการข่าว (Scrollable List) */}
+              {/* ส่วนขวา: รายการข่าว */}
               <div className="lg:col-span-5 flex flex-col h-full overflow-hidden">
                 <div className="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
                   {news.map((item, idx) => {
                     const isActive = activeNews?.title === item.title;
                     return (
-                        // ใช้ Link ครอบ list item ด้วย เพื่อให้คลิกแล้วไปอ่านข่าวได้เหมือนกัน
-                      <Link 
+                      <Link
                         href={`/news/${item.id}`}
                         key={idx}
-                        onMouseEnter={() => setActiveNews(item)} // ยังคงเปลี่ยนรูปเมื่อ Hover
+                        onMouseEnter={() => setActiveNews(item)}
                         className={`block p-4 rounded-2xl cursor-pointer transition-all duration-300 border-2 ${
-                          isActive 
-                            ? "bg-emerald-50 border-emerald-500 shadow-md translate-x-2" 
+                          isActive
+                            ? "bg-emerald-50 border-emerald-500 shadow-md translate-x-2"
                             : "bg-white border-transparent hover:bg-slate-50 hover:border-slate-200"
                         }`}
                       >
                         <div className="flex gap-4 items-center">
-                           {/* Date Box */}
-                           <div className={`flex-shrink-0 w-16 h-16 rounded-xl flex flex-col items-center justify-center transition-colors ${
-                             isActive ? "bg-emerald-600 text-white" : "bg-slate-100 text-slate-500"
-                           }`}>
-                              <span className="text-xl font-bold leading-none">{item.date.split(' ')[0]}</span>
-                              <span className="text-[10px] uppercase mt-1">{item.date.split(' ')[1]}</span>
-                           </div>
-                           
-                           {/* Text Info */}
-                           <div className="flex-grow">
-                              <h4 className={`font-bold text-sm md:text-base line-clamp-2 mb-1 ${
+                          <div
+                            className={`flex-shrink-0 w-16 h-16 rounded-xl flex flex-col items-center justify-center transition-colors ${
+                              isActive
+                                ? "bg-emerald-600 text-white"
+                                : "bg-slate-100 text-slate-500"
+                            }`}
+                          >
+                            <span className="text-xl font-bold leading-none">
+                              {item.date.split(" ")[0]}
+                            </span>
+                            <span className="text-[10px] uppercase mt-1">
+                              {item.date.split(" ")[1]}
+                            </span>
+                          </div>
+
+                          <div className="flex-grow">
+                            <h4
+                              className={`font-bold text-sm md:text-base line-clamp-2 mb-1 ${
                                 isActive ? "text-emerald-900" : "text-slate-700"
-                              }`}>
-                                {item.title}
-                              </h4>
-                              <div className="flex justify-between items-center">
-                                <span className="text-xs text-slate-400">Admin Post</span>
-                                {isActive && <ChevronRight size={16} className="text-emerald-600 animate-pulse"/>}
-                              </div>
-                           </div>
+                              }`}
+                            >
+                              {item.title}
+                            </h4>
+                            <div className="flex justify-between items-center">
+                              <span className="text-xs text-slate-400">
+                                Admin Post
+                              </span>
+                              {isActive && (
+                                <ChevronRight
+                                  size={16}
+                                  className="text-emerald-600 animate-pulse"
+                                />
+                              )}
+                            </div>
+                          </div>
                         </div>
                       </Link>
-                    )
+                    );
                   })}
                 </div>
-                
-                {/* Decorative footer for list */}
                 <div className="mt-4 pt-4 border-t border-slate-100 text-center">
-                   <p className="text-xs text-slate-400">เลื่อนเพื่อดูข่าวสารเพิ่มเติม</p>
+                  <p className="text-xs text-slate-400">
+                    เลื่อนเพื่อดูข่าวสารเพิ่มเติม
+                  </p>
                 </div>
               </div>
-
             </div>
           </div>
         </section>
 
+        {/* ==========================================================================
+            CLIENTS SECTION (ลูกค้า) - NEW DESIGN: Compact & Interactive Accordion
+            ========================================================================== */}
+        <section id="ลูกค้า" className="py-16 bg-slate-50 relative">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="text-center mb-10">
+              <div className="inline-block px-4 py-2 bg-white rounded-full mb-4 shadow-sm border border-slate-100">
+                <span className="text-emerald-700 font-semibold text-sm flex items-center gap-2">
+                  <Building2 size={16} />
+                  พันธมิตรที่ไว้วางใจ
+                </span>
+              </div>
+              <h2 className="text-4xl font-bold text-slate-900">
+                ลูกค้าของเรา
+              </h2>
+            </div>
 
-        {/* Footer - (No changes needed here) */}
+            {/* Accordion Container - Desktop (2 Rows of 5) */}
+            <div className="hidden md:flex flex-col gap-4">
+              {/* Row 1 */}
+              <div className="flex h-[160px] gap-3">
+                {firstRowClients.map((client, idx) => (
+                  <div
+                    key={idx}
+                    className="relative flex-1 hover:flex-[2.5] transition-all duration-500 ease-in-out bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl overflow-hidden group cursor-default"
+                  >
+                    {/* Default State (Centered Logo) */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 transition-opacity duration-300 group-hover:opacity-0">
+                      <img
+                        src={client.logo}
+                        alt={client.short}
+                        className="h-16 w-auto object-contain grayscale opacity-60"
+                      />
+                    </div>
+
+                    {/* Hover State (Expanded Content) */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-emerald-50 to-teal-50 p-6 flex items-center gap-6">
+                      <div className="w-20 h-20 bg-white rounded-xl p-2 shadow-md flex-shrink-0 flex items-center justify-center">
+                        <img
+                          src={client.logo}
+                          alt={client.short}
+                          className="h-full w-auto object-contain"
+                        />
+                      </div>
+                      <div className="flex-grow min-w-0 overflow-hidden whitespace-nowrap">
+                        <span className="text-emerald-600 text-xs font-bold uppercase tracking-wider flex items-center gap-1 mb-1">
+                          <CheckCircle2 size={12} /> {client.sector}
+                        </span>
+                        <h3 className="text-lg font-bold text-slate-800 truncate">
+                          {client.name}
+                        </h3>
+                        <p className="text-sm text-slate-500">{client.short}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Row 2 */}
+              <div className="flex h-[160px] gap-3">
+                {secondRowClients.map((client, idx) => (
+                  <div
+                    key={idx}
+                    className="relative flex-1 hover:flex-[2.5] transition-all duration-500 ease-in-out bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl overflow-hidden group cursor-default"
+                  >
+                    {/* Default State */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 transition-opacity duration-300 group-hover:opacity-0">
+                      <img
+                        src={client.logo}
+                        alt={client.short}
+                        className="h-16 w-auto object-contain grayscale opacity-60"
+                      />
+                    </div>
+
+                    {/* Hover State */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-teal-50 to-sky-50 p-6 flex items-center gap-6">
+                      <div className="w-20 h-20 bg-white rounded-xl p-2 shadow-md flex-shrink-0 flex items-center justify-center">
+                        <img
+                          src={client.logo}
+                          alt={client.short}
+                          className="h-full w-auto object-contain"
+                        />
+                      </div>
+                      <div className="flex-grow min-w-0 overflow-hidden whitespace-nowrap">
+                        <span className="text-teal-600 text-xs font-bold uppercase tracking-wider flex items-center gap-1 mb-1">
+                          <CheckCircle2 size={12} /> {client.sector}
+                        </span>
+                        <h3 className="text-lg font-bold text-slate-800 truncate">
+                          {client.name}
+                        </h3>
+                        <p className="text-sm text-slate-500">{client.short}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile View: Simple Horizontal Scroll Snap (Clean & Easy) */}
+            <div className="md:hidden flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
+              {clients.map((client, idx) => (
+                <div
+                  key={idx}
+                  className="snap-center shrink-0 w-[260px] bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col items-center text-center"
+                >
+                  <div className="w-20 h-20 mb-4 flex items-center justify-center">
+                    <img
+                      src={client.logo}
+                      alt={client.short}
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
+                  <h4 className="font-bold text-slate-800 text-sm line-clamp-2 h-10">
+                    {client.name}
+                  </h4>
+                  <span className="text-xs text-emerald-600 mt-2 bg-emerald-50 px-2 py-1 rounded-full">
+                    {client.sector}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
         <footer className="bg-gradient-to-br from-slate-900 via-emerald-950 to-teal-900 text-white py-20 px-4">
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-4 gap-12 mb-16">
@@ -985,18 +1171,23 @@ export default function Home() {
                   เมนูหลัก
                 </h4>
                 <ul className="space-y-3">
-                  {["หน้าแรก", "เกี่ยวกับ", "บริการ", "สินค้า", "ข่าวสาร", "ลูกค้า"].map(
-                    (item) => (
-                      <li key={item}>
-                        <a
-                          href={`#${item}`}
-                          className="text-slate-200 hover:text-white transition-colors hover:translate-x-2 inline-block transform"
-                        >
-                          → {item}
-                        </a>
-                      </li>
-                    )
-                  )}
+                  {[
+                    "หน้าแรก",
+                    "เกี่ยวกับ",
+                    "บริการ",
+                    "สินค้า",
+                    "ข่าวสาร",
+                    "ลูกค้า",
+                  ].map((item) => (
+                    <li key={item}>
+                      <a
+                        href={`#${item}`}
+                        className="text-slate-200 hover:text-white transition-colors hover:translate-x-2 inline-block transform"
+                      >
+                        → {item}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
 
@@ -1053,7 +1244,8 @@ export default function Home() {
                     <div>
                       <div className="font-semibold text-white">ที่อยู่</div>
                       <span>
-                        99/35 นิว คอนเน็กซ์ เฮาส์ ถนนพหลโยธิน แขวงสนามบิน เขตดอนเมือง จังหวัดกรุงเทพมหานคร 10210
+                        99/35 นิว คอนเน็กซ์ เฮาส์ ถนนพหลโยธิน แขวงสนามบิน
+                        เขตดอนเมือง จังหวัดกรุงเทพมหานคร 10210
                         <br />
                         ทำการ : จันทร์-ศุกร์ | 08:00 - 17:00 น.
                       </span>
@@ -1143,7 +1335,9 @@ export default function Home() {
                     <div className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
                       Line
                     </div>
-                    <div className="text-sm text-slate-500">@artexponential</div>
+                    <div className="text-sm text-slate-500">
+                      @artexponential
+                    </div>
                   </div>
                   <ChevronRight
                     className="text-slate-400 group-hover:text-emerald-700 group-hover:translate-x-1 transition-all"
@@ -1222,7 +1416,8 @@ export default function Home() {
                     <div>
                       <div className="font-bold text-slate-900">ที่อยู่</div>
                       <div className="text-sm text-slate-700">
-                        99/35 นิว คอนเน็กซ์ เฮาส์ ถนนพหลโยธิน แขวงสนามบิน เขตดอนเมือง จังหวัดกรุงเทพมหานคร 10210
+                        99/35 นิว คอนเน็กซ์ เฮาส์ ถนนพหลโยธิน แขวงสนามบิน
+                        เขตดอนเมือง จังหวัดกรุงเทพมหานคร 10210
                       </div>
                     </div>
                   </div>
@@ -1257,4 +1452,4 @@ export default function Home() {
       </div>
     </>
   );
-};
+}
