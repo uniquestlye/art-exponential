@@ -106,12 +106,12 @@ export const news = [
   },
   {
     id: 4,
-    title: "เปิดตัวสินค้านวัตกรรมใหม่ปี 2026",
+    title: "เข้าร่วม การอบรมเชิงปฏิบัติการ เรื่อง Advanced MSK Utrasound Bootcamp",
     date: "2025-12-01",
     displayDate: "1 ธ.ค. 2568",
-    image: "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?w=500",
-    excerpt: "A.R.T เตรียมเปิดตัวหุ่นยนต์บริการรุ่นใหม่ล่าสุด ตอบโจทย์ Smart City...",
+    image: "/images/new4.jpg",
+    excerpt: "เข้าร่วม การอบรมเชิงปฏิบัติการ เรื่อง Advanced MSK Utrasound Bootcamp",
     content: "เนื้อหาข่าวฉบับเต็ม....",
-    category: "เทคโนโลยี"
+    category: "กิจกรรม"
   }
 ];

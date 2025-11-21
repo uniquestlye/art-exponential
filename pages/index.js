@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { products, news } from "../data/mockData";
 
-
 import {
   Menu,
   X,
@@ -24,7 +23,7 @@ import {
   Users,
   Lightbulb,
   Building2,
-  CheckCircle2, // เพิ่ม Icon
+  CheckCircle2,
 } from "lucide-react";
 
 /* ---------- STATIC DATA (นอก Component) ---------- */
@@ -139,18 +138,15 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [openImage, setOpenImage] = useState(null); // สำหรับ ISO
-  const [selectedProduct, setSelectedProduct] = useState(null); // สำหรับ Product Detail Modal
-  const [activeNews, setActiveNews] = useState(news[0]); // สำหรับ News
+  const [openImage, setOpenImage] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [activeNews, setActiveNews] = useState(news[0]);
 
-  // แยกหมวดหมู่สินค้า
   const medicalProducts = products.filter((p) => p.category === "การแพทย์");
   const electricalProducts = products.filter((p) => p.category === "ไฟฟ้า");
 
-  // ฟังก์ชันสำหรับ Infinite Scroll Loop (Clone ข้อมูลเพื่อให้เลื่อนไม่สะดุด)
   const getScrollItems = (items) => [...items, ...items, ...items];
 
-  // ตรวจจับการเลื่อนหน้า
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -158,10 +154,6 @@ export default function Home() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // แบ่ง Clients เป็น 2 แถวสำหรับ Accordion View
-  const firstRowClients = clients.slice(0, 5);
-  const secondRowClients = clients.slice(5, 10);
 
   return (
     <>
@@ -174,8 +166,8 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* Global Styles */}
       <style jsx global>{`
+        /* Animation สำหรับการเลื่อนสินค้าแนวตั้ง */
         @keyframes scroll-y {
           0% { transform: translateY(0); }
           100% { transform: translateY(-50%); }
@@ -183,7 +175,29 @@ export default function Home() {
         .animate-scroll-y {
           animation: scroll-y 30s linear infinite;
         }
-        /* ซ่อน Scrollbar แต่ยังเลื่อนได้ */
+
+        /* Animation สำหรับลูกค้า (แนวนอน) */
+        @keyframes scroll-left {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes scroll-right {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
+        }
+        .animate-scroll-left {
+          animation: scroll-left 60s linear infinite;
+        }
+        .animate-scroll-right {
+          animation: scroll-right 60s linear infinite;
+        }
+        /* หยุด animation เมื่อเอาเมาส์ชี้ */
+        .pause-hover:hover .animate-scroll-left,
+        .pause-hover:hover .animate-scroll-right,
+        .pause-hover:hover .animate-scroll-y {
+          animation-play-state: paused;
+        }
+
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
@@ -980,123 +994,62 @@ export default function Home() {
         </section>
 
         {/* ==========================================================================
-            CLIENTS SECTION (ลูกค้า) - NEW DESIGN: Compact & Interactive Accordion
-            ========================================================================== */}
-        <section id="ลูกค้า" className="py-16 bg-slate-50 relative">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="text-center mb-10">
-              <div className="inline-block px-4 py-2 bg-white rounded-full mb-4 shadow-sm border border-slate-100">
-                <span className="text-emerald-700 font-semibold text-sm flex items-center gap-2">
-                  <Building2 size={16} />
-                  พันธมิตรที่ไว้วางใจ
-                </span>
-              </div>
-              <h2 className="text-4xl font-bold text-slate-900">
-                ลูกค้าของเรา
-              </h2>
+           CLIENTS SECTION (ลูกค้า) - INFINITE DUAL MARQUEE
+           ========================================================================== */}
+        <section
+          id="ลูกค้า"
+          className="py-16 bg-slate-50 overflow-hidden relative"
+        >
+          <div className="max-w-7xl mx-auto px-4 mb-10 text-center relative z-10">
+            <div className="inline-block px-4 py-2 bg-white rounded-full mb-4 shadow-sm border border-slate-100">
+              <span className="text-emerald-700 font-semibold text-sm flex items-center gap-2">
+                <Building2 size={16} />
+                ลูกค้าที่ไว้วางใจ
+              </span>
             </div>
+            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-2">
+              ลูกค้าของเรา
+            </h2>
+            <p className="text-lg text-slate-500">
+              ได้รับความไว้วางใจจากหน่วยงานชั้นนำทั่วประเทศ
+            </p>
+          </div>
 
-            {/* Accordion Container - Desktop (2 Rows of 5) */}
-            <div className="hidden md:flex flex-col gap-4">
-              {/* Row 1 */}
-              <div className="flex h-[160px] gap-3">
-                {firstRowClients.map((client, idx) => (
-                  <div
-                    key={idx}
-                    className="relative flex-1 hover:flex-[2.5] transition-all duration-500 ease-in-out bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl overflow-hidden group cursor-default"
-                  >
-                    {/* Default State (Centered Logo) */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 transition-opacity duration-300 group-hover:opacity-0">
-                      <img
-                        src={client.logo}
-                        alt={client.short}
-                        className="h-16 w-auto object-contain grayscale opacity-60"
-                      />
-                    </div>
+          {/* Client Marquee Container */}
+          <div className="relative w-full py-4 pause-hover group">
+            {/* Gradient Fade Sides (ทำให้ขอบจางดูนุ่มนวล) */}
+            <div className="absolute inset-y-0 left-0 w-24 md:w-64 bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent z-20 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-24 md:w-64 bg-gradient-to-l from-slate-50 via-slate-50/80 to-transparent z-20 pointer-events-none" />
 
-                    {/* Hover State (Expanded Content) */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-emerald-50 to-teal-50 p-6 flex items-center gap-6">
-                      <div className="w-20 h-20 bg-white rounded-xl p-2 shadow-md flex-shrink-0 flex items-center justify-center">
-                        <img
-                          src={client.logo}
-                          alt={client.short}
-                          className="h-full w-auto object-contain"
-                        />
-                      </div>
-                      <div className="flex-grow min-w-0 overflow-hidden whitespace-nowrap">
-                        <span className="text-emerald-600 text-xs font-bold uppercase tracking-wider flex items-center gap-1 mb-1">
-                          <CheckCircle2 size={12} /> {client.sector}
-                        </span>
-                        <h3 className="text-lg font-bold text-slate-800 truncate">
-                          {client.name}
-                        </h3>
-                        <p className="text-sm text-slate-500">{client.short}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Row 2 */}
-              <div className="flex h-[160px] gap-3">
-                {secondRowClients.map((client, idx) => (
-                  <div
-                    key={idx}
-                    className="relative flex-1 hover:flex-[2.5] transition-all duration-500 ease-in-out bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl overflow-hidden group cursor-default"
-                  >
-                    {/* Default State */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 transition-opacity duration-300 group-hover:opacity-0">
-                      <img
-                        src={client.logo}
-                        alt={client.short}
-                        className="h-16 w-auto object-contain grayscale opacity-60"
-                      />
-                    </div>
-
-                    {/* Hover State */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-teal-50 to-sky-50 p-6 flex items-center gap-6">
-                      <div className="w-20 h-20 bg-white rounded-xl p-2 shadow-md flex-shrink-0 flex items-center justify-center">
-                        <img
-                          src={client.logo}
-                          alt={client.short}
-                          className="h-full w-auto object-contain"
-                        />
-                      </div>
-                      <div className="flex-grow min-w-0 overflow-hidden whitespace-nowrap">
-                        <span className="text-teal-600 text-xs font-bold uppercase tracking-wider flex items-center gap-1 mb-1">
-                          <CheckCircle2 size={12} /> {client.sector}
-                        </span>
-                        <h3 className="text-lg font-bold text-slate-800 truncate">
-                          {client.name}
-                        </h3>
-                        <p className="text-sm text-slate-500">{client.short}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Mobile View: Simple Horizontal Scroll Snap (Clean & Easy) */}
-            <div className="md:hidden flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
-              {clients.map((client, idx) => (
+            {/* Single Row: Move Left */}
+            <div className="flex gap-8 w-max animate-scroll-left group-hover:[animation-play-state:paused]">
+              {/* Triple the list to ensure seamless infinite scroll */}
+              {[...clients, ...clients, ...clients].map((client, idx) => (
                 <div
-                  key={idx}
-                  className="snap-center shrink-0 w-[260px] bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col items-center text-center"
+                  key={`client-${idx}`}
+                  className="relative w-[260px] h-[100px] bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-default flex items-center gap-4 group/card"
                 >
-                  <div className="w-20 h-20 mb-4 flex items-center justify-center">
+                  {/* Logo */}
+                  <div className="w-14 h-14 rounded-full bg-slate-50 p-2 flex-shrink-0 flex items-center justify-center overflow-hidden group-hover/card:bg-white transition-colors">
                     <img
                       src={client.logo}
                       alt={client.short}
-                      className="max-h-full max-w-full object-contain"
+                     className="w-full h-full object-contain transition-transform duration-300 group-hover/card:scale-110"
                     />
                   </div>
-                  <h4 className="font-bold text-slate-800 text-sm line-clamp-2 h-10">
-                    {client.name}
-                  </h4>
-                  <span className="text-xs text-emerald-600 mt-2 bg-emerald-50 px-2 py-1 rounded-full">
-                    {client.sector}
-                  </span>
+                  
+                  {/* Text Info */}
+                  <div className="flex-grow min-w-0">
+                    <div className="text-[10px] font-bold text-emerald-600 opacity-0 -translate-y-2 group-hover/card:opacity-100 group-hover/card:translate-y-0 transition-all duration-300">
+                      {client.sector}
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-700 group-hover/card:text-slate-900 line-clamp-2 leading-tight transition-colors">
+                      {client.name}
+                    </h4>
+                    <div className="text-[10px] text-slate-400 mt-0.5 group-hover/card:hidden transition-all">
+                      {client.short}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -1312,7 +1265,7 @@ export default function Home() {
                       Facebook
                     </div>
                     <div className="text-sm text-slate-500">
-                      แชทกับเราทาง Facebook
+                      A R T Exponential 
                     </div>
                   </div>
                   <ChevronRight
