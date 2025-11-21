@@ -24,6 +24,17 @@ import {
   Lightbulb,
   Building2,
   CheckCircle2,
+  TrendingUp,
+  Recycle,
+  Scale,
+  Heart,
+  Zap,
+  Stethoscope, // แพทย์
+  FlaskConical, // วิทยาศาสตร์
+  Dumbbell,    // กีฬา
+  Monitor,     // ไอที
+  Briefcase,   // สำนักงาน
+  Cpu,         // อะไหล่/ชิ้นส่วน
 } from "lucide-react";
 
 /* ---------- STATIC DATA (นอก Component) ---------- */
@@ -353,58 +364,112 @@ export default function Home() {
         </section>
 
         {/* About Section */}
-        <section id="เกี่ยวกับ" className="py-24 px-4 bg-white">
+        <section id="เกี่ยวกับ" className="py-24 px-4 bg-white overflow-hidden">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            {/* Header */}
+            <div className="text-center mb-16 relative z-10">
               <div className="inline-block px-4 py-2 bg-gradient-to-r from-emerald-100 to-teal-100 rounded-full mb-4">
                 <span className="text-emerald-700 font-semibold text-sm">
-                  เกี่ยวกับ A.R.T
+                  รู้จักกับ A.R.T. EXPONENTIAL
                 </span>
               </div>
               <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-4">
-                เกี่ยวกับเรา
+                ความเป็นมาและวิสัยทัศน์
               </h2>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                ความมุ่งมั่นและวิสัยทัศน์ที่ขับเคลื่อนองค์กรไปสู่ความสำเร็จ
-              </p>
               <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto mt-6" />
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8 mb-16">
-              <div className="group relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-3xl blur-xl opacity-0 group-hover:opacity-20 transition-opacity" />
-                <div className="relative bg-gradient-to-br from-white to-emerald-50 rounded-3xl p-10 shadow-lg hover:shadow-2xl transition-all border border-emerald-100">
-                  <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-                    <Target className="text-white" size={40} />
+            {/* 1. History Section (ประวัติความเป็นมา) */}
+            <div className="relative mb-20">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-50 to-sky-50 rounded-3xl -skew-y-1 transform" />
+              <div className="relative bg-white border border-slate-100 rounded-3xl p-8 md:p-12 shadow-xl flex flex-col md:flex-row gap-12 items-center">
+                <div className="md:w-1/3 text-center md:text-right">
+                  <div className="inline-block p-4 bg-emerald-100 rounded-2xl mb-4">
+                    <Building2 size={48} className="text-emerald-600" />
                   </div>
-                  <h3 className="text-3xl font-bold text-slate-900 mb-4">
-                    วิสัยทัศน์
+                  <h3 className="text-2xl font-bold text-slate-800">
+                    ก้าวสำคัญสู่ยุคใหม่
                   </h3>
-                  <p className="text-slate-600 leading-relaxed text-lg">
-                    ส่งต่อผลิตภัณฑ์ทางด้านคอมพิวเตอร์ สินค้าไอที
-                    และอุปกรณ์การแพทย์ที่มีคุณภาพ ได้มาตรฐานสากล
-                    เพื่อยกระดับคุณภาพชีวิตของประชาชนอย่างยั่งยืน
-                  </p>
+                  <div className="mt-2 text-emerald-600 font-bold text-lg">
+                    2562 - ปัจจุบัน
+                  </div>
                 </div>
-              </div>
-
-              <div className="group relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-teal-500 to-sky-500 rounded-3xl blur-xl opacity-0 group-hover:opacity-20 transition-opacity" />
-                <div className="relative bg-gradient-to-br from-white to-sky-50 rounded-3xl p-10 shadow-lg hover:shadow-2xl transition-all border border-sky-100">
-                  <div className="w-20 h-20 bg-gradient-to-br from-teal-500 to-sky-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-                    <Award className="text-white" size={40} />
-                  </div>
-                  <h3 className="text-3xl font-bold text-slate-900 mb-4">
-                    พันธกิจ
+                
+                <div className="md:w-2/3 border-l-4 border-emerald-500 pl-8 md:pl-12">
+                  <h3 className="text-3xl font-bold text-slate-900 mb-6">
+                    ประวัติความเป็นมา
                   </h3>
-                  <p className="text-slate-600 leading-relaxed text-lg">
-                    ส่งมอบโซลูชันเทคโนโลยีที่ทันสมัย ด้วยประสบการณ์กว่า 10 ปี
-                    บริการด้วยความเข้าใจผู้ใช้งานจริง ตอบโจทย์ทั้งภาครัฐ เอกชน
-                    และชุมชนท้องถิ่น ด้วยมาตรฐานสากล
+                  <p className="text-slate-600 text-lg leading-relaxed mb-6">
+                    บริษัทของเราก่อตั้งขึ้นเมื่อปี <strong>พ.ศ. 2562</strong> ในนาม 
+                    <span className="text-slate-400 mx-2 line-through decoration-slate-400">บริษัท เดอะรูท คอร์ปอเรชั่น จำกัด</span>
+                    โดยเริ่มต้นจากการจำหน่ายอุปกรณ์ไฟฟ้า งานซ่อมบำรุง และครุภัณฑ์ต่างๆ 
+                  </p>
+                  <p className="text-slate-600 text-lg leading-relaxed bg-slate-50 p-6 rounded-xl border border-slate-100">
+                    <span className="block mb-2 font-bold text-emerald-700">
+                      🚀 การเปลี่ยนแปลงครั้งสำคัญ (27 ธันวาคม 2567)
+                    </span>
+                    เราได้เปลี่ยนชื่อเป็น <strong>"บริษัท เอ.อาร์.ที. เอกซ์โพเนนเชียล จำกัด"</strong> 
+                    เพื่อสะท้อนภาพลักษณ์ที่ทันสมัยและการเติบโตอย่างก้าวกระโดด 
+                    พร้อมมุ่งเน้นการดำเนินธุรกิจด้าน <strong>วัสดุและอุปกรณ์ทางการแพทย์</strong> 
+                    อย่างเต็มรูปแบบ ควบคู่ไปกับสินค้าเทคโนโลยีและคอมพิวเตอร์
                   </p>
                 </div>
               </div>
             </div>
+
+            {/* 2. Vision (วิสัยทัศน์) */}
+            <div className="grid md:grid-cols-12 gap-8 mb-12">
+              <div className="md:col-span-12 lg:col-span-5 relative group h-full">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity" />
+                <div className="relative h-full bg-gradient-to-br from-emerald-600 to-teal-700 rounded-3xl p-10 text-white shadow-2xl flex flex-col justify-center overflow-hidden">
+                  <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
+                  <Target size={48} className="mb-6 text-emerald-200" /> 
+                  <h3 className="text-3xl font-bold mb-4">วิสัยทัศน์ (Vision)</h3>
+                  <p className="text-emerald-50 text-lg leading-relaxed">
+                    "มุ่งเป็นผู้นำด้านอุปกรณ์การแพทย์มาตรฐานสากล สร้างความเชื่อมั่นด้วยนวัตกรรม 
+                    พร้อมแสวงหาโอกาสทางธุรกิจร่วมกับพันธมิตร เพื่อสร้างผลตอบแทนที่ยั่งยืน 
+                    แก่ผู้ถือหุ้นและสังคม"
+                  </p>
+                </div>
+              </div>
+
+              {/* 3. Mission (พันธกิจ - 8 Points) */}
+              <div className="md:col-span-12 lg:col-span-7">
+                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-lg h-full">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                    <Award className="text-teal-500" />
+                    พันธกิจของเรา (Mission)
+                  </h3>
+                  
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {[
+                      { text: "พัฒนาบุคลากรสู่มาตรฐานสากลอย่างต่อเนื่อง", icon: Users },
+                      { text: "บริหารงานเป็นระบบด้วย PDCA", icon: CheckCircle2 },
+                      { text: "สร้างความสุขและความภาคภูมิใจให้พนักงาน", icon: Heart }, // Note: Import Heart
+                      { text: "ตอบสนองความคาดหวังของผู้มีส่วนได้เสีย", icon: Target },
+                      { text: "ใช้เทคโนโลยีทันสมัยเพิ่มประสิทธิภาพ", icon: Lightbulb }, // Note: Import Lightbulb
+                      { text: "ใช้ทรัพยากรคุ้มค่า (Reduce, Reuse, Recycle)", icon: Recycle }, // Note: Import Recycle
+                      { text: "ปฏิบัติตามกฎหมายและสิ่งแวดล้อม", icon: Scale }, // Note: Import Scale
+                      { text: "สร้างผลตอบแทนที่ดีและยั่งยืน", icon: TrendingUp }, // Note: Import TrendingUp
+                    ].map((item, idx) => {
+                      const Icon = item.icon;
+                      return (
+                        <div key={idx} className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
+                           <div className="mt-1 flex-shrink-0 w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center">
+                              {/* ใช้ไอคอนถ้ามี หรือใช้ CheckCircle เป็นค่า Default */}
+                              {item.icon ? <item.icon size={16} /> : <CheckCircle2 size={16} />}
+                           </div>
+                           <span className="text-slate-600 text-sm font-medium leading-tight">
+                             {item.text}
+                           </span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
           </div>
         </section>
 
@@ -547,14 +612,14 @@ export default function Home() {
                   title: "ระบบบริหารคุณภาพ",
                   desc: "รับรองมาตรฐานการบริหารจัดการคุณภาพระดับสากล",
                   gradient: "from-emerald-500 to-teal-500",
-                  logo: "/images/iso9001.png",
+                  logo: "/images/iso9001.jpg",
                 },
                 {
                   iso: "ISO 14001:2015",
                   title: "ระบบบริหารสิ่งแวดล้อม",
                   desc: "รับรองมาตรฐานการจัดการสิ่งแวดล้อมที่ยั่งยืน",
                   gradient: "from-teal-500 to-sky-500",
-                  logo: "/images/iso14001.png",
+                  logo: "/images/iso14001.jpg",
                 },
               ].map((item, idx) => (
                 <div key={idx} className="group relative">
@@ -661,193 +726,136 @@ export default function Home() {
         </section>
 
         {/* Products (สินค้า) */}
-        <section
-          id="สินค้า"
-          className="py-24 px-4 bg-slate-50 overflow-hidden relative"
-        >
-          <div className="max-w-7xl mx-auto">
+        {/* Business Types / Products Section (New Design) */}
+        <section id="สินค้า" className="py-24 px-4 bg-slate-50 relative overflow-hidden">
+          {/* Background Decoration */}
+          <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div className="absolute -top-24 -right-24 w-96 h-96 bg-emerald-100 rounded-full blur-3xl opacity-50" />
+            <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-white to-transparent" />
+          </div>
+
+          <div className="max-w-7xl mx-auto relative z-10">
             {/* Header */}
             <div className="text-center mb-16">
-              <div className="inline-block px-4 py-2 bg-white rounded-full mb-4 shadow-md">
+              <div className="inline-block px-4 py-2 bg-white rounded-full mb-4 shadow-sm border border-slate-100">
                 <span className="text-emerald-700 font-semibold text-sm">
-                  ไฮไลท์ผลิตภัณฑ์
+                  SCOPE OF BUSINESS
                 </span>
               </div>
-              <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-4">
-                กลุ่มสินค้าแนะนำ
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+                ประเภทธุรกิจและสินค้า
               </h2>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                นวัตกรรมทางการแพทย์และระบบไฟฟ้ามาตรฐานสากล
+              <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+                ครอบคลุมทุกความต้องการ ตั้งแต่เครื่องมือแพทย์ วิทยาศาสตร์ ไฟฟ้า สำนักงาน ไปจนถึงเทคโนโลยี
               </p>
               <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto mt-6" />
             </div>
 
-            {/* Dual Category Showcase */}
-            <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-              {/* 1. Medical Zone */}
-              <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden flex flex-col h-[600px]">
-                <div className="p-6 bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-100 flex justify-between items-center z-10 relative">
-                  <div>
-                    <h3 className="text-2xl font-bold text-emerald-800 flex items-center gap-2">
-                      <span className="text-3xl">🏥</span> อุปกรณ์การแพทย์
-                    </h3>
-                    <p className="text-emerald-600 text-sm">
-                      Medical & Healthcare
-                    </p>
-                  </div>
-                </div>
-
-                <div className="relative flex-grow overflow-hidden pause-hover bg-slate-50/50">
-                  <div className="absolute w-full p-6 space-y-4 animate-scroll-y">
-                    {getScrollItems(medicalProducts).map((product, idx) => (
-                      <div
-                        key={`${product.id}-med-${idx}`}
-                        className="flex bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer border border-slate-100 items-center gap-4 group"
-                        onClick={() => setSelectedProduct(product)}
-                      >
-                        <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform"
-                          />
-                        </div>
-                        <div className="flex-grow">
-                          <h4 className="font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">
-                            {product.name}
-                          </h4>
-                          <p className="text-xs text-slate-500 line-clamp-2 mt-1">
-                            {product.detail}
-                          </p>
-                          <span className="text-xs text-emerald-500 font-semibold mt-2 inline-flex items-center">
-                            ดูรายละเอียด <ChevronRight size={14} />
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none" />
-                  <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none" />
-                </div>
-              </div>
-
-              {/* 2. Electrical Zone */}
-              <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden flex flex-col h-[600px]">
-                <div className="p-6 bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-100 flex justify-between items-center z-10 relative">
-                  <div>
-                    <h3 className="text-2xl font-bold text-amber-800 flex items-center gap-2">
-                      <span className="text-3xl">⚡</span> อุปกรณ์ไฟฟ้า
-                    </h3>
-                    <p className="text-amber-600 text-sm">Electrical & Power</p>
-                  </div>
-                </div>
-
-                <div className="relative flex-grow overflow-hidden pause-hover bg-slate-50/50">
-                  <div
-                    className="absolute w-full p-6 space-y-4 animate-scroll-y"
-                    style={{ animationDuration: "45s" }}
+            {/* Business Types Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  title: "เครื่องมือและอุปกรณ์ทางการแพทย์",
+                  desc: "จำหน่ายและนำเข้าเครื่องมือแพทย์ วัสดุอุปกรณ์ทางการแพทย์ และอะไหล่อุปกรณ์ทางการแพทย์มาตรฐานสากล",
+                  icon: Stethoscope,
+                  color: "emerald",
+                  gradient: "from-emerald-500 to-teal-500",
+                  bg: "bg-emerald-50"
+                },
+                {
+                  title: "วิทยาศาสตร์และห้องปฏิบัติการ",
+                  desc: "วัสดุอุปกรณ์ห้องปฏิบัติการเคมี วิทยาศาสตร์ เครื่องมือวิเคราะห์ และอุปกรณ์สำหรับห้องแล็บทุกประเภท",
+                  icon: FlaskConical,
+                  color: "blue",
+                  gradient: "from-blue-500 to-cyan-500",
+                  bg: "bg-blue-50"
+                },
+                {
+                  title: "ระบบไฟฟ้าและงานติดตั้ง",
+                  desc: "วัสดุอุปกรณ์ไฟฟ้าครบวงจร พร้อมบริการรับเหมาติดตั้ง ซ่อมแซมระบบไฟฟ้าโดยทีมช่างผู้เชี่ยวชาญ",
+                  icon: Zap,
+                  color: "amber",
+                  gradient: "from-amber-500 to-orange-500",
+                  bg: "bg-amber-50"
+                },
+                {
+                  title: "อุปกรณ์สำนักงาน",
+                  desc: "ครุภัณฑ์สำนักงาน เครื่องใช้สำนักงาน เฟอร์นิเจอร์ และวัสดุสิ้นเปลืองต่างๆ สำหรับองค์กร",
+                  icon: Briefcase,
+                  color: "slate",
+                  gradient: "from-slate-600 to-slate-800",
+                  bg: "bg-slate-50"
+                },
+                {
+                  title: "กีฬาและเครื่องออกกำลังกาย",
+                  desc: "อุปกรณ์กีฬามาตรฐาน สนามกีฬา และเครื่องออกกำลังกายเพื่อสุขภาพ สำหรับหน่วยงานและสวนสาธารณะ",
+                  icon: Dumbbell,
+                  color: "rose",
+                  gradient: "from-rose-500 to-pink-500",
+                  bg: "bg-rose-50"
+                },
+                {
+                  title: "สินค้าไอทีและคอมพิวเตอร์",
+                  desc: "จำหน่ายและนำเข้าคอมพิวเตอร์ อุปกรณ์ต่อพ่วง ซอฟต์แวร์ และโซลูชันไอทีที่ทันสมัย",
+                  icon: Monitor,
+                  color: "indigo",
+                  gradient: "from-indigo-500 to-violet-500",
+                  bg: "bg-indigo-50"
+                }
+              ].map((item, idx) => {
+                const Icon = item.icon;
+                return (
+                  <div 
+                    key={idx}
+                    className="group bg-white rounded-3xl p-8 border border-slate-100 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col"
                   >
-                    {getScrollItems(electricalProducts).map((product, idx) => (
-                      <div
-                        key={`${product.id}-elec-${idx}`}
-                        className="flex bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer border border-slate-100 items-center gap-4 group"
-                        onClick={() => setSelectedProduct(product)}
-                      >
-                        <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform"
-                          />
-                        </div>
-                        <div className="flex-grow">
-                          <h4 className="font-bold text-slate-800 group-hover:text-amber-600 transition-colors">
-                            {product.name}
-                          </h4>
-                          <p className="text-xs text-slate-500 line-clamp-2 mt-1">
-                            {product.detail}
-                          </p>
-                          <span className="text-xs text-amber-500 font-semibold mt-2 inline-flex items-center">
-                            ดูรายละเอียด <ChevronRight size={14} />
-                          </span>
-                        </div>
-                      </div>
-                    ))}
+                    <div className={`w-16 h-16 rounded-2xl ${item.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500`}>
+                      <Icon className={`text-${item.color}-600`} size={32} />
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors">
+                      {item.title}
+                    </h3>
+                    
+                    <p className="text-slate-600 leading-relaxed mb-6 flex-grow">
+                      {item.desc}
+                    </p>
+
+                    <div className="pt-6 border-t border-slate-100">
+                      <span className="text-sm font-bold text-slate-400 group-hover:text-emerald-600 flex items-center gap-2 transition-colors cursor-pointer">
+                        สอบถามข้อมูล <ChevronRight size={16} />
+                      </span>
+                    </div>
+                    
+                    {/* Decorative Gradient Line on Hover */}
+                    <div className={`absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r ${item.gradient} group-hover:w-full transition-all duration-500 rounded-b-3xl`} />
                   </div>
-                  <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none" />
-                  <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none" />
-                </div>
-              </div>
+                );
+              })}
             </div>
 
-            <div className="text-center mt-12">
-              <Link
-                href="/products"
-                className="px-10 py-4 bg-slate-800 text-white rounded-full font-semibold hover:bg-slate-700 hover:shadow-lg transform hover:-translate-y-1 transition-all inline-flex items-center space-x-2"
-              >
-                <span>ค้นหาสินค้าทุกหมวดหมู่</span>
-                <ChevronRight />
-              </Link>
+            {/* Call to Action */}
+            <div className="mt-16 text-center bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-12 opacity-10">
+                <Package size={120} className="text-white" />
+              </div>
+              <div className="relative z-10">
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                  ต้องการใบเสนอราคาหรือปรึกษาโครงการ?
+                </h3>
+                <p className="text-slate-300 mb-8 max-w-2xl mx-auto">
+                  เราพร้อมให้คำปรึกษาและจัดหาสินค้าตามความต้องการของท่าน ด้วยทีมงานมืออาชีพ
+                </p>
+                <Link
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); setIsContactOpen(true); }}
+                  className="inline-flex items-center px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-white rounded-full font-bold transition-all shadow-lg hover:shadow-emerald-500/30 transform hover:-translate-y-1"
+                >
+                  ติดต่อเราทันที <ChevronRight className="ml-2" />
+                </Link>
+              </div>
             </div>
           </div>
-
-          {/* Modal */}
-          {selectedProduct && (
-            <div
-              className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-              onClick={() => setSelectedProduct(null)}
-            >
-              <div
-                className="bg-white rounded-3xl overflow-hidden shadow-2xl max-w-4xl w-full grid md:grid-cols-2 animate-in fade-in zoom-in-50 duration-200"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="aspect-square md:aspect-auto relative bg-slate-100">
-                  <img
-                    src={selectedProduct.image}
-                    alt={selectedProduct.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-8 flex flex-col relative h-full max-h-[60vh] md:max-h-none overflow-y-auto">
-                  <button
-                    onClick={() => setSelectedProduct(null)}
-                    className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-red-500 transition-colors"
-                  >
-                    <X />
-                  </button>
-
-                  {selectedProduct.category && (
-                    <span className="inline-block self-start px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-bold mb-4">
-                      {selectedProduct.category}
-                    </span>
-                  )}
-
-                  <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                    {selectedProduct.name}
-                  </h2>
-
-                  <div className="prose prose-slate text-slate-600 mb-8 flex-grow">
-                    <p className="leading-relaxed">{selectedProduct.detail}</p>
-                    {selectedProduct.description && (
-                      <p className="mt-4">{selectedProduct.description}</p>
-                    )}
-                  </div>
-
-                  <div className="mt-auto pt-6 border-t border-slate-100">
-                    <button
-                      onClick={() => {
-                        setSelectedProduct(null);
-                        setIsContactOpen(true);
-                      }}
-                      className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-colors shadow-lg shadow-emerald-200"
-                    >
-                      ติดต่อสอบถามสินค้านี้
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </section>
 
         {/* News (ข่าวสาร) */}
