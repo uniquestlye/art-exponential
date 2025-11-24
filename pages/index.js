@@ -1,4 +1,3 @@
-// pages/index.js
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
@@ -152,6 +151,9 @@ export default function Home() {
   const [openImage, setOpenImage] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [activeNews, setActiveNews] = useState(news[0]);
+  
+  // เพิ่ม State สำหรับ Modal หมวดหมู่สินค้า
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const medicalProducts = products.filter((p) => p.category === "การแพทย์");
   const electricalProducts = products.filter((p) => p.category === "ไฟฟ้า");
@@ -215,6 +217,16 @@ export default function Home() {
         .scrollbar-hide {
             -ms-overflow-style: none;
             scrollbar-width: none;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 3px;
         }
       `}</style>
 
@@ -445,18 +457,16 @@ export default function Home() {
                     {[
                       { text: "พัฒนาบุคลากรสู่มาตรฐานสากลอย่างต่อเนื่อง", icon: Users },
                       { text: "บริหารงานเป็นระบบด้วย PDCA", icon: CheckCircle2 },
-                      { text: "สร้างความสุขและความภาคภูมิใจให้พนักงาน", icon: Heart }, // Note: Import Heart
+                      { text: "สร้างความสุขและความภาคภูมิใจให้พนักงาน", icon: Heart },
                       { text: "ตอบสนองความคาดหวังของผู้มีส่วนได้เสีย", icon: Target },
-                      { text: "ใช้เทคโนโลยีทันสมัยเพิ่มประสิทธิภาพ", icon: Lightbulb }, // Note: Import Lightbulb
-                      { text: "ใช้ทรัพยากรคุ้มค่า (Reduce, Reuse, Recycle)", icon: Recycle }, // Note: Import Recycle
-                      { text: "ปฏิบัติตามกฎหมายและสิ่งแวดล้อม", icon: Scale }, // Note: Import Scale
-                      { text: "สร้างผลตอบแทนที่ดีและยั่งยืน", icon: TrendingUp }, // Note: Import TrendingUp
+                      { text: "ใช้เทคโนโลยีทันสมัยเพิ่มประสิทธิภาพ", icon: Lightbulb },
+                      { text: "ใช้ทรัพยากรคุ้มค่า (Reduce, Reuse, Recycle)", icon: Recycle },
+                      { text: "ปฏิบัติตามกฎหมายและสิ่งแวดล้อม", icon: Scale },
+                      { text: "สร้างผลตอบแทนที่ดีและยั่งยืน", icon: TrendingUp },
                     ].map((item, idx) => {
-                      const Icon = item.icon;
                       return (
                         <div key={idx} className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
                            <div className="mt-1 flex-shrink-0 w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center">
-                              {/* ใช้ไอคอนถ้ามี หรือใช้ CheckCircle เป็นค่า Default */}
                               {item.icon ? <item.icon size={16} /> : <CheckCircle2 size={16} />}
                            </div>
                            <span className="text-slate-600 text-sm font-medium leading-tight">
@@ -725,8 +735,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Products (สินค้า) */}
-        {/* Business Types / Products Section (New Design) */}
+        
+       {/* Business Types / Products Section (New Design) */}
         <section id="สินค้า" className="py-24 px-4 bg-slate-50 relative overflow-hidden">
           {/* Background Decoration */}
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -760,7 +770,8 @@ export default function Home() {
                   icon: Stethoscope,
                   color: "emerald",
                   gradient: "from-emerald-500 to-teal-500",
-                  bg: "bg-emerald-50"
+                  bg: "bg-emerald-50",
+                  categoryKey: "การแพทย์" // Key สำหรับ Filter สินค้า
                 },
                 {
                   title: "วิทยาศาสตร์และห้องปฏิบัติการ",
@@ -768,7 +779,8 @@ export default function Home() {
                   icon: FlaskConical,
                   color: "blue",
                   gradient: "from-blue-500 to-cyan-500",
-                  bg: "bg-blue-50"
+                  bg: "bg-blue-50",
+                  categoryKey: "วิทยาศาสตร์และห้องปฏิบัติการ"
                 },
                 {
                   title: "ระบบไฟฟ้าและงานติดตั้ง",
@@ -776,7 +788,8 @@ export default function Home() {
                   icon: Zap,
                   color: "amber",
                   gradient: "from-amber-500 to-orange-500",
-                  bg: "bg-amber-50"
+                  bg: "bg-amber-50",
+                  categoryKey: "ระบบไฟฟ้าและงานติดตั้ง"
                 },
                 {
                   title: "อุปกรณ์สำนักงาน",
@@ -784,7 +797,8 @@ export default function Home() {
                   icon: Briefcase,
                   color: "slate",
                   gradient: "from-slate-600 to-slate-800",
-                  bg: "bg-slate-50"
+                  bg: "bg-slate-50",
+                  categoryKey: "อุปกรณ์สำนักงาน"
                 },
                 {
                   title: "กีฬาและเครื่องออกกำลังกาย",
@@ -792,7 +806,8 @@ export default function Home() {
                   icon: Dumbbell,
                   color: "rose",
                   gradient: "from-rose-500 to-pink-500",
-                  bg: "bg-rose-50"
+                  bg: "bg-rose-50",
+                  categoryKey: "กีฬาและเครื่องออกกำลังกาย"
                 },
                 {
                   title: "สินค้าไอทีและคอมพิวเตอร์",
@@ -800,14 +815,18 @@ export default function Home() {
                   icon: Monitor,
                   color: "indigo",
                   gradient: "from-indigo-500 to-violet-500",
-                  bg: "bg-indigo-50"
+                  bg: "bg-indigo-50",
+                  categoryKey: "สินค้าไอทีและคอมพิวเตอร์"
                 }
               ].map((item, idx) => {
                 const Icon = item.icon;
                 return (
                   <div 
                     key={idx}
-                    className="group bg-white rounded-3xl p-8 border border-slate-100 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col"
+                    onClick={() => {
+                        setSelectedCategory({ title: item.title, key: item.categoryKey }); 
+                    }}
+                    className="group bg-white rounded-3xl p-8 border border-slate-100 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col cursor-pointer"
                   >
                     <div className={`w-16 h-16 rounded-2xl ${item.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500`}>
                       <Icon className={`text-${item.color}-600`} size={32} />
@@ -822,8 +841,8 @@ export default function Home() {
                     </p>
 
                     <div className="pt-6 border-t border-slate-100">
-                      <span className="text-sm font-bold text-slate-400 group-hover:text-emerald-600 flex items-center gap-2 transition-colors cursor-pointer">
-                        สอบถามข้อมูล <ChevronRight size={16} />
+                      <span className="text-sm font-bold text-emerald-600 group-hover:text-emerald-700 flex items-center gap-2 transition-colors">
+                        ดูสินค้า <ChevronRight size={16} />
                       </span>
                     </div>
                     
@@ -1001,9 +1020,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ==========================================================================
-           CLIENTS SECTION (ลูกค้า) - INFINITE DUAL MARQUEE
-           ========================================================================== */}
+        {/* CLIENTS SECTION (ลูกค้า) */}
         <section
           id="ลูกค้า"
           className="py-16 bg-slate-50 overflow-hidden relative"
@@ -1023,30 +1040,24 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Client Marquee Container */}
           <div className="relative w-full py-4 pause-hover group">
-            {/* Gradient Fade Sides (ทำให้ขอบจางดูนุ่มนวล) */}
             <div className="absolute inset-y-0 left-0 w-24 md:w-64 bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent z-20 pointer-events-none" />
             <div className="absolute inset-y-0 right-0 w-24 md:w-64 bg-gradient-to-l from-slate-50 via-slate-50/80 to-transparent z-20 pointer-events-none" />
 
-            {/* Single Row: Move Left */}
             <div className="flex gap-8 w-max animate-scroll-left group-hover:[animation-play-state:paused]">
-              {/* Triple the list to ensure seamless infinite scroll */}
               {[...clients, ...clients, ...clients].map((client, idx) => (
                 <div
                   key={`client-${idx}`}
                   className="relative w-[260px] h-[100px] bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-default flex items-center gap-4 group/card"
                 >
-                  {/* Logo */}
                   <div className="w-14 h-14 rounded-full bg-slate-50 p-2 flex-shrink-0 flex items-center justify-center overflow-hidden group-hover/card:bg-white transition-colors">
                     <img
                       src={client.logo}
                       alt={client.short}
-                     className="w-full h-full object-contain transition-transform duration-300 group-hover/card:scale-110"
+                      className="w-full h-full object-contain transition-transform duration-300 group-hover/card:scale-110"
                     />
                   </div>
                   
-                  {/* Text Info */}
                   <div className="flex-grow min-w-0">
                     <div className="text-[10px] font-bold text-emerald-600 opacity-0 -translate-y-2 group-hover/card:opacity-100 group-hover/card:translate-y-0 transition-all duration-300">
                       {client.sector}
@@ -1068,7 +1079,6 @@ export default function Home() {
         <footer className="bg-gradient-to-br from-slate-900 via-emerald-950 to-teal-900 text-white py-20 px-4">
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-4 gap-12 mb-16">
-              {/* Logo + about */}
               <div className="col-span-2">
                 <div className="flex items-center space-x-3 mb-6">
                   <div className="w-14 h-14 rounded-xl overflow-hidden bg-white shadow-2xl flex items-center justify-center">
@@ -1126,7 +1136,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Menu */}
               <div>
                 <h4 className="text-xl font-bold mb-6 bg-gradient-to-r from-emerald-300 to-teal-300 bg-clip-text text-transparent">
                   เมนูหลัก
@@ -1152,7 +1161,6 @@ export default function Home() {
                 </ul>
               </div>
 
-              {/* Contact */}
               <div>
                 <h4 className="text-xl font-bold mb-6 bg-gradient-to-r from-teal-300 to-sky-300 bg-clip-text text-transparent">
                   ติดต่อเรา
@@ -1258,7 +1266,6 @@ export default function Home() {
               </div>
 
               <div className="space-y-3 max-h-96 overflow-y-auto">
-                {/* Facebook */}
                 <a
                   href="https://www.facebook.com/profile.php?id=61573842487909"
                   target="_blank"
@@ -1282,7 +1289,6 @@ export default function Home() {
                   />
                 </a>
 
-                {/* Line */}
                 <a
                   href="https://line.me/R/ti/p/@024lfgkw"
                   target="_blank"
@@ -1306,7 +1312,6 @@ export default function Home() {
                   />
                 </a>
 
-                {/* Email */}
                 <a
                   href="mailto:a.r.t.exponential.office@gmail.com"
                   className="flex items-center space-x-4 p-4 bg-gradient-to-r from-rose-50 to-rose-100 rounded-2xl hover:from-rose-100 hover:to-rose-200 transition-all group transform hover:scale-105"
@@ -1328,7 +1333,6 @@ export default function Home() {
                   />
                 </a>
 
-                {/* Phone office */}
                 <a
                   href="tel:0804746169"
                   className="flex items-center space-x-4 p-4 bg-gradient-to-r from-teal-50 to-teal-100 rounded-2xl hover:from-teal-100 hover:to-teal-200 transition-all group transform hover:scale-105"
@@ -1348,7 +1352,6 @@ export default function Home() {
                   />
                 </a>
 
-                {/* Phone claim */}
                 <a
                   href="tel:0994132744"
                   className="flex items-center space-x-4 p-4 bg-gradient-to-r from-amber-50 to-orange-100 rounded-2xl hover:from-amber-100 hover:to-orange-200 transition-all group transform hover:scale-105"
@@ -1368,7 +1371,6 @@ export default function Home() {
                   />
                 </a>
 
-                {/* Map */}
                 <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-100 rounded-2xl">
                   <div className="flex items-center space-x-4 mb-3">
                     <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg">
@@ -1410,6 +1412,155 @@ export default function Home() {
             </div>
           )}
         </div>
+
+        {/* 1. Category List Modal (NEW) */}
+        {selectedCategory && (
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[60] p-4 animate-in fade-in duration-200"
+            onClick={() => setSelectedCategory(null)}
+          >
+            <div 
+              className="bg-white rounded-3xl w-full max-w-5xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <div>
+                  <h3 className="text-2xl font-bold text-slate-900">{selectedCategory.title}</h3>
+                  <p className="text-slate-500 text-sm">รายการสินค้าในหมวดหมู่</p>
+                </div>
+                <button 
+                  onClick={() => setSelectedCategory(null)}
+                  className="p-2 hover:bg-slate-200 rounded-full transition-colors"
+                >
+                  <X size={24} className="text-slate-500" />
+                </button>
+              </div>
+
+              {/* Content: Product Grid */}
+              <div className="p-6 overflow-y-auto custom-scrollbar">
+                {products.filter(p => p.category === selectedCategory.key || selectedCategory.key === 'All').length > 0 ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {products
+                      .filter(p => p.category === selectedCategory.key) // กรองสินค้าตามหมวด
+                      .map((product, idx) => (
+                      <div 
+                        key={idx}
+                        onClick={() => {
+                          setSelectedProduct(product); // เปิด Modal รายละเอียดสินค้า
+                        }}
+                        className="group bg-white border border-slate-200 rounded-xl p-3 hover:shadow-lg hover:border-emerald-400 transition-all cursor-pointer"
+                      >
+                        <div className="aspect-square rounded-lg overflow-hidden bg-slate-100 mb-3 relative">
+                           <img 
+                             src={product.image} 
+                             alt={product.name} 
+                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                           />
+                           {/* Overlay Button */}
+                           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                              <span className="bg-white/90 text-slate-900 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                ดูรายละเอียด
+                              </span>
+                           </div>
+                        </div>
+                        <h4 className="font-bold text-slate-800 text-sm line-clamp-2 mb-1 group-hover:text-emerald-600 transition-colors">
+                          {product.name}
+                        </h4>
+                        <p className="text-xs text-slate-500 line-clamp-1">
+                          {product.detail}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-20 text-slate-400 flex flex-col items-center">
+                    <Package size={64} className="mb-4 opacity-50" />
+                    <p className="text-lg">ยังไม่มีรายการสินค้าในหมวดหมู่นี้</p>
+                    <p className="text-sm">กรุณาติดต่อสอบถามเจ้าหน้าที่</p>
+                  </div>
+                )}
+              </div>
+              
+              {/* Footer */}
+              <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
+                 <button 
+                    onClick={() => {
+                        setSelectedCategory(null);
+                        setIsContactOpen(true);
+                    }}
+                    className="text-emerald-600 text-sm font-bold hover:underline mr-auto"
+                 >
+                    ไม่พบสินค้าที่ต้องการ? ติดต่อเรา
+                 </button>
+                 <button 
+                    onClick={() => setSelectedCategory(null)}
+                    className="px-6 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg font-bold transition-colors"
+                 >
+                    ปิด
+                 </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 2. Product Detail Modal */}
+        {selectedProduct && (
+          <div
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[70] p-4"
+            onClick={() => setSelectedProduct(null)}
+          >
+            <div
+              className="bg-white rounded-3xl overflow-hidden shadow-2xl max-w-4xl w-full grid md:grid-cols-2 animate-in fade-in zoom-in-50 duration-200"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="aspect-square md:aspect-auto relative bg-slate-100">
+                <img
+                  src={selectedProduct.image}
+                  alt={selectedProduct.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-8 flex flex-col relative h-full max-h-[60vh] md:max-h-none overflow-y-auto">
+                <button
+                  onClick={() => setSelectedProduct(null)}
+                  className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-red-500 transition-colors"
+                >
+                  <X />
+                </button>
+
+                {selectedProduct.category && (
+                  <span className="inline-block self-start px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-bold mb-4">
+                    {selectedProduct.category}
+                  </span>
+                )}
+
+                <h2 className="text-3xl font-bold text-slate-900 mb-4">
+                  {selectedProduct.name}
+                </h2>
+
+                <div className="prose prose-slate text-slate-600 mb-8 flex-grow">
+                  <p className="leading-relaxed">{selectedProduct.detail}</p>
+                  {selectedProduct.description && (
+                    <p className="mt-4">{selectedProduct.description}</p>
+                  )}
+                </div>
+
+                <div className="mt-auto pt-6 border-t border-slate-100">
+                  <button
+                    onClick={() => {
+                      setSelectedProduct(null);
+                      setIsContactOpen(true);
+                    }}
+                    className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-colors shadow-lg shadow-emerald-200"
+                  >
+                    ติดต่อสอบถามสินค้านี้
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
